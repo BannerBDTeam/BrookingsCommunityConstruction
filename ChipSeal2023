@@ -1,0 +1,3277 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Brookings Chip and Seal 2023</title>
+<meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no">
+<link href="https://api.mapbox.com/mapbox-gl-js/v2.12.0/mapbox-gl.css" rel="stylesheet">
+<script src="https://api.mapbox.com/mapbox-gl-js/v2.12.0/mapbox-gl.js"></script>
+<style>
+body { margin: 0; padding: 0; }
+#map { position: absolute; top: 0; bottom: 0; width: 100%; }
+.mapboxgl-popup-content {
+  font: 150 15px/22px 'Roboto', 'Roboto', sans-serif;
+  padding: 0;
+  width: 250px;
+}
+.mapboxgl-popup-content h2 {
+  background: #a1ff28;
+  color: #000000;
+  margin: 0;
+  padding: 10px;
+  border-radius: 3px 3px 0 0;
+  font-weight: 300;
+  margin-top: -15px;
+}
+.mapboxgl-popup-content h3 {
+  background: #000000;
+  color: #fff;
+  margin: 0;
+  padding: 10px;
+  border-radius: 3px 3px 0 0;
+  font-weight: 300;
+  margin-top: -15px;
+}
+.mapboxgl-popup-content h4 {
+  background: #454545;
+  color: #fff;
+  margin: 0;
+  padding: 7px;
+  font-weight: 200;
+}
+.mapboxgl-popup-content div {
+  padding: 7px;
+  background: #f0f0f0;
+}
+.mapboxgl-popup-anchor-top > .mapboxgl-popup-content {
+  margin-top: 5px;
+}
+.mapboxgl-popup-anchor-top .mapboxgl-popup-tip,
+.mapboxgl-popup-anchor-top-left .mapboxgl-popup-tip,
+.mapboxgl-popup-anchor-top-right .mapboxgl-popup-tip {
+    border-bottom-color: #FA582A;
+}
+.mapboxgl-popup-anchor-bottom .mapboxgl-popup-tip,
+.mapboxgl-popup-anchor-bottom-left .mapboxgl-popup-tip,
+.mapboxgl-popup-anchor-bottom-right .mapboxgl-popup-tip {
+    border-top-color: #FA582A;
+}
+.mapboxgl-popup-anchor-left .mapboxgl-popup-tip {
+    border-right-color: #FA582A;
+}
+.mapboxgl-popup-anchor-right .mapboxgl-popup-tip {
+    border-left-color: #FA582A;
+}
+</style>
+</head>
+<body>
+<div id="map"></div>
+<script>
+	mapboxgl.accessToken = 'pk.eyJ1IjoiYmFubmVyYmR0ZWFtIiwiYSI6ImNsY3FpbTJobzA2NmYzcW1mejJvaDFsZWsifQ.-toPmuwGFIj-ECyxLGAGLw';
+		const map = new mapboxgl.Map({
+			container: 'map', // container ID
+			style: 'mapbox://styles/bannerbdteam/clcqee9fj000416pdx6c34njq', // style URL
+		center: [-96.801292, 44.290253], // starting position [lng, lat]
+		zoom: 14.8 // starting zoom
+	});
+map.scrollZoom.disable();
+map.doubleClickZoom.disable();
+map.dragPan.disable();
+map.dragRotate.disable();
+map.keyboard.disable();
+var nav = new mapboxgl.NavigationControl({
+        showCompass: true,
+        showZoom: false
+      });
+map.addControl(nav, "top-right");
+var PaintA = {
+			'line-color': '#000000',
+			'line-width': 5,
+			'line-opacity': 1
+			};
+var PaintB = {
+			'line-color': '#FA582A',
+			'line-width': 3,
+			'line-opacity': 1
+			};
+map.on('load', () => {
+	map.addSource('RegencyCt', {
+		'type': 'geojson',
+		'data': {
+			'type': 'Feature',
+			'properties': {
+				'description':
+					'<h3>Regency Court</h3><div><b>Dates?</b></div>',
+			},
+			'geometry': {
+			'type': 'LineString',
+				'coordinates': [
+					[-96.809774, 44.297155],
+					[-96.809783, 44.296556],
+					[-96.81191, 44.29655],
+					[-96.811883, 44.29493],
+					[-96.809738, 44.294949],
+					[-96.809756, 44.295528],
+					[-96.80962, 44.295645],
+					[-96.809411, 44.295717],
+					[-96.80882, 44.295723]
+				]
+			}
+		}
+	});
+	map.addLayer({
+		'id': 'RegencyCtOutline',
+		'type': 'line',
+		'source': 'RegencyCt',
+		'layout': {
+			'line-join': 'round',
+		},
+		'paint': PaintA
+	});
+	map.addLayer({
+		'id': 'RegencyCtLine',
+		'type': 'line',
+		'source': 'RegencyCt',
+		'layout': {
+			'line-join': 'round',
+		},
+		'paint': PaintB 
+	});	
+	map.on('click', 'RegencyCtLine', (e) => {		
+		const coordinates = e.features[0].geometry.coordinates.slice();
+		const description = e.features[0].properties.description;		
+		while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
+			coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
+		}
+		new mapboxgl.Popup()
+			.setLngLat([-96.809756, 44.295528])
+			.setHTML(description)
+			.addTo(map);
+	});
+	map.on('mouseenter', 'RegencyCtLine', () => {
+		map.getCanvas().style.cursor = 'pointer';
+	});
+	map.on('mouseleave', 'RegencyCtLine', () => {
+		map.getCanvas().style.cursor = '';
+	});
+	map.addSource('BrokenBowTrail', {
+		'type': 'geojson',
+		'data': {
+			'type': 'Feature',
+			'properties': {
+				'description':
+					'<h3>Broken Bow Trail</h3><div><b>Dates?</b></div>',
+			},
+			'geometry': {
+			'type': 'LineString',
+				'coordinates': [
+					[-96.808799, 44.295724],
+					[-96.808434, 44.295716],
+					[-96.808237, 44.295669],
+					[-96.807998, 44.295596],
+					[-96.807777, 44.295446],
+					[-96.807652, 44.295335],
+					[-96.807544, 44.295202],
+					[-96.807491, 44.29507],
+					[-96.807467, 44.294895],
+					[-96.807461, 44.294758],
+					[-96.807485, 44.294617],
+					[-96.807532, 44.294501],
+					[-96.807831, 44.294155],
+					[-96.808058, 44.293885],
+					[-96.808297, 44.293915],
+					[-96.808542, 44.293937],
+					[-96.808763, 44.293954]
+				]
+			}
+		}
+	});
+	map.addLayer({
+		'id': 'BrokenBowTrailOutline',
+		'type': 'line',
+		'source': 'BrokenBowTrail',
+		'layout': {
+			'line-join': 'round',
+		},
+		'paint': PaintA
+	});
+	map.addLayer({
+		'id': 'BrokenBowTrailLine',
+		'type': 'line',
+		'source': 'BrokenBowTrail',
+		'layout': {
+			'line-join': 'round',
+		},
+		'paint': PaintB
+	});	
+	map.on('click', 'BrokenBowTrailLine', (e) => {		
+		const coordinates = e.features[0].geometry.coordinates.slice();
+		const description = e.features[0].properties.description;		
+		while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
+			coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
+		}	
+		new mapboxgl.Popup()
+			.setLngLat([-96.807777, 44.295446])
+			.setHTML(description)
+			.addTo(map);
+	});	
+	map.on('mouseenter', 'BrokenBowTrailLine', () => {
+		map.getCanvas().style.cursor = 'pointer';
+	});	
+	map.on('mouseleave', 'BrokenBowTrailLine', () => {
+		map.getCanvas().style.cursor = '';
+	});
+	map.addSource('ThunderPass', {
+		'type': 'geojson',
+		'data': {
+			'type': 'Feature',
+			'properties': {
+				'description':
+					'<h3>Thunder Pass</h3><div><b>Dates?</b></div>',
+			},
+			'geometry': {
+			'type': 'LineString',
+				'coordinates': [
+					[-96.807885, 44.295523],
+					[-96.80767, 44.295716],
+					[-96.80755, 44.295831],
+					[-96.807246, 44.295976],
+					[-96.807072, 44.296053],
+					[-96.807019, 44.29607],
+					[-96.80672, 44.296139],
+					[-96.806594, 44.296147],
+					[-96.806338, 44.296143]
+				]
+			}
+		}
+	});
+	map.addLayer({
+		'id': 'ThunderPassOutline',
+		'type': 'line',
+		'source': 'ThunderPass',
+		'layout': {
+			'line-join': 'round',
+		},
+		'paint': PaintA
+	});
+	map.addLayer({
+		'id': 'ThunderPassLine',
+		'type': 'line',
+		'source': 'ThunderPass',
+		'layout': {
+			'line-join': 'round',
+		},
+		'paint': PaintB
+	});	
+	map.on('click', 'ThunderPassLine', (e) => {		
+		const coordinates = e.features[0].geometry.coordinates.slice();
+		const description = e.features[0].properties.description;		
+		while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
+			coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
+		}	
+		new mapboxgl.Popup()
+			.setLngLat([-96.807072, 44.296053])
+			.setHTML(description)
+			.addTo(map);
+	});	
+	map.on('mouseenter', 'ThunderPassLine', () => {
+		map.getCanvas().style.cursor = 'pointer';
+	});	
+	map.on('mouseleave', 'ThunderPassLine', () => {
+		map.getCanvas().style.cursor = '';
+	});	
+	map.addSource('ThunderLn', {
+		'type': 'geojson',
+		'data': {
+			'type': 'Feature',
+			'properties': {
+				'description':
+					'<h3>Thunder Lane</h3><div><b>Dates?</b></div>',
+			},
+			'geometry': {
+			'type': 'LineString',
+				'coordinates': [
+					[-96.807183, 44.296024],
+					[-96.807298, 44.296179],
+					[-96.807448, 44.296318],
+					[-96.807611, 44.296416],
+					[-96.807775, 44.296492],
+					[-96.808013, 44.29658],
+					[-96.808172, 44.296634],
+					[-96.808163, 44.296697],
+					[-96.808229, 44.296725],
+					[-96.808313, 44.296703],
+					[-96.808309, 44.296646],
+					[-96.808256, 44.296599],
+					[-96.808172, 44.296634]
+				]
+			}
+		}
+	});
+	map.addLayer({
+		'id': 'ThunderLnOutline',
+		'type': 'line',
+		'source': 'ThunderLn',
+		'layout': {
+			'line-join': 'round',
+		},
+		'paint': PaintA
+	});
+	map.addLayer({
+		'id': 'ThunderLnLine',
+		'type': 'line',
+		'source': 'ThunderLn',
+		'layout': {
+			'line-join': 'round',
+		},
+		'paint': PaintB
+	});	
+	map.on('click', 'ThunderLnLine', (e) => {		
+		const coordinates = e.features[0].geometry.coordinates.slice();
+		const description = e.features[0].properties.description;		
+		while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
+			coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
+		}	
+		new mapboxgl.Popup()
+			.setLngLat([-96.808172, 44.296634])
+			.setHTML(description)
+			.addTo(map);
+	});	
+	map.on('mouseenter', 'ThunderLnLine', () => {
+		map.getCanvas().style.cursor = 'pointer';
+	});	
+	map.on('mouseleave', 'ThunderLnLine', () => {
+		map.getCanvas().style.cursor = '';
+	});	
+	map.addSource('OnakaTrail', {
+		'type': 'geojson',
+		'data': {
+			'type': 'Feature',
+			'properties': {
+				'description':
+					'<h3>Onaka Trail</h3><div><b>Dates?</b></div>',
+			},
+			'geometry': {
+			'type': 'LineString',
+				'coordinates': [
+					[-96.806326, 44.297122],
+					[-96.80635, 44.296126],
+					[-96.806361, 44.295506],
+					[-96.806356, 44.294946],
+					[-96.80635, 44.294433],
+					[-96.80626, 44.294262]
+				]
+			}
+		}
+	});
+	map.addLayer({
+		'id': 'OnakaTrailOutline',
+		'type': 'line',
+		'source': 'OnakaTrail',
+		'layout': {
+			'line-join': 'round',
+		},
+		'paint': PaintA
+	});
+	map.addLayer({
+		'id': 'OnakaTrailLine',
+		'type': 'line',
+		'source': 'OnakaTrail',
+		'layout': {
+			'line-join': 'round',
+		},
+		'paint': PaintB
+	});
+	map.on('click', 'OnakaTrailLine', (e) => {		
+		const coordinates = e.features[0].geometry.coordinates.slice();
+		const description = e.features[0].properties.description;		
+		while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
+			coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
+		}
+		new mapboxgl.Popup()
+			.setLngLat([-96.806356, 44.294946])
+			.setHTML(description)
+			.addTo(map);
+	});	
+	map.on('mouseenter', 'OnakaTrailLine', () => {
+		map.getCanvas().style.cursor = 'pointer';
+	});	
+	map.on('mouseleave', 'OnakaTrailLine', () => {
+		map.getCanvas().style.cursor = '';
+	});	
+	map.addSource('CrystalRidgeRd', {
+		'type': 'geojson',
+		'data': {
+			'type': 'Feature',
+			'properties': {
+				'description':
+					'<h3>Crystal Ridge Road</h3><div><b>Dates?</b></div>',
+			},
+			'geometry': {
+			'type': 'LineString',
+				'coordinates': [
+					[-96.803784, 44.297117],
+					[-96.803776, 44.296115],
+					[-96.803768, 44.29519],
+					[-96.80376, 44.29495],
+					[-96.803678, 44.294428],
+					[-96.803489, 44.294083],
+					[-96.803293, 44.293813],
+					[-96.803162, 44.293643],
+					[-96.80272, 44.293257],
+					[-96.802409, 44.293028],
+					[-96.801615, 44.292682],
+					[-96.801165, 44.292583],
+					[-96.800486, 44.292466],
+					[-96.80015, 44.29246],
+					[-96.799741, 44.292296]
+				]
+			}
+		}
+	});
+	map.addLayer({
+		'id': 'CrystalRidgeRdOutline',
+		'type': 'line',
+		'source': 'CrystalRidgeRd',
+		'layout': {
+			'line-join': 'round',
+		},
+		'paint': PaintA
+	});
+	map.addLayer({
+		'id': 'CrystalRidgeRdLine',
+		'type': 'line',
+		'source': 'CrystalRidgeRd',
+		'layout': {
+			'line-join': 'round',
+		},
+		'paint': PaintB
+	});	
+	map.on('click', 'CrystalRidgeRdLine', (e) => {		
+		const coordinates = e.features[0].geometry.coordinates.slice();
+		const description = e.features[0].properties.description;		
+		while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
+			coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
+		}
+		new mapboxgl.Popup()
+			.setLngLat([-96.803162, 44.293643])
+			.setHTML(description)
+			.addTo(map);
+	});	
+	map.on('mouseenter', 'CrystalRidgeRdLine', () => {
+		map.getCanvas().style.cursor = 'pointer';
+	});	
+	map.on('mouseleave', 'CrystalRidgeRdLine', () => {
+		map.getCanvas().style.cursor = '';
+	});	
+	map.addSource('DeerLn', {
+		'type': 'geojson',
+		'data': {
+			'type': 'Feature',
+			'properties': {
+				'description':
+					'<h3>Deer Lane</h3><div><b>Dates?</b></div>',
+			},
+			'geometry': {
+			'type': 'LineString',
+				'coordinates': [
+					[-96.805093, 44.296113],
+					[-96.805105, 44.294621],
+					[-96.805111, 44.294461],
+					[-96.805064, 44.294351]
+				]
+			}
+		}
+	});
+	map.addLayer({
+		'id': 'DeerLnOutline',
+		'type': 'line',
+		'source': 'DeerLn',
+		'layout': {
+			'line-join': 'round',
+		},
+		'paint': PaintA
+	});
+	map.addLayer({
+		'id': 'DeerLnLine',
+		'type': 'line',
+		'source': 'DeerLn',
+		'layout': {
+			'line-join': 'round',
+		},
+		'paint': PaintB
+	});	
+	map.on('click', 'DeerLnLine', (e) => {		
+		const coordinates = e.features[0].geometry.coordinates.slice();
+		const description = e.features[0].properties.description;		
+		while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
+			coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
+		}		
+		new mapboxgl.Popup()
+			.setLngLat([-96.805111, 44.294461])
+			.setHTML(description)
+			.addTo(map);
+	});	
+	map.on('mouseenter', 'DeerLnLine', () => {
+		map.getCanvas().style.cursor = 'pointer';
+	});	
+	map.on('mouseleave', 'DeerLnLine', () => {
+		map.getCanvas().style.cursor = '';
+	});	
+	map.addSource('DakotaTrail', {
+		'type': 'geojson',
+		'data': {
+			'type': 'Feature',
+			'properties': {
+				'description':
+					'<h3>Dakota Trail</h3><div><b>Dates?</b></div>',
+			},
+			'geometry': {
+			'type': 'LineString',
+				'coordinates': [
+					[-96.803675, 44.294431],
+					[-96.804296, 44.294353],
+					[-96.805071, 44.294342],
+					[-96.806258, 44.29427],
+					[-96.80672, 44.293925],
+					[-96.806766, 44.293942],
+					[-96.806824, 44.293942],
+					[-96.806883, 44.293903],
+					[-96.806879, 44.293848],
+					[-96.806844, 44.293817],
+					[-96.806751, 44.293806],
+					[-96.806665, 44.293834],
+					[-96.806665, 44.293878],
+					[-96.806716, 44.293923]
+				]
+			}
+		}
+	});
+	map.addLayer({
+		'id': 'DakotaTrailOutline',
+		'type': 'line',
+		'source': 'DakotaTrail',
+		'layout': {
+			'line-join': 'round',
+		},
+		'paint': PaintA
+	});
+	map.addLayer({
+		'id': 'DakotaTrailLine',
+		'type': 'line',
+		'source': 'DakotaTrail',
+		'layout': {
+			'line-join': 'round',
+		},
+		'paint': PaintB
+	});	
+	map.on('click', 'DakotaTrailLine', (e) => {		
+		const coordinates = e.features[0].geometry.coordinates.slice();
+		const description = e.features[0].properties.description;		
+		while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
+			coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
+		}		
+		new mapboxgl.Popup()
+			.setLngLat([-96.806824, 44.293942])
+			.setHTML(description)
+			.addTo(map);
+	});	
+	map.on('mouseenter', 'DakotaTrailLine', () => {
+		map.getCanvas().style.cursor = 'pointer';
+	});	
+	map.on('mouseleave', 'DakotaTrailLine', () => {
+		map.getCanvas().style.cursor = '';
+	});	
+	map.addSource('TellurideLn', {
+		'type': 'geojson',
+		'data': {
+			'type': 'Feature',
+			'properties': {
+				'description':
+					'<h3>Telluride Lane</h3><div><b>Dates?</b></div>',
+			},
+			'geometry': {
+			'type': 'LineString',
+				'coordinates': [
+					[-96.808781, 44.293958],
+					[-96.811785, 44.293976],
+					[-96.811973, 44.29397],
+					[-96.812055, 44.293946],
+					[-96.812308, 44.293817],
+					[-96.813004, 44.293442],
+					[-96.813053, 44.293349],
+					[-96.813102, 44.293232],
+					[-96.81307, 44.292353],
+					[-96.813037, 44.291368]
+				]
+			}
+		}
+	});
+	map.addLayer({
+		'id': 'TellurideLnOutline',
+		'type': 'line',
+		'source': 'TellurideLn',
+		'layout': {
+			'line-join': 'round',
+		},
+		'paint': PaintA
+	});
+	map.addLayer({
+		'id': 'TellurideLnLine',
+		'type': 'line',
+		'source': 'TellurideLn',
+		'layout': {
+			'line-join': 'round',
+		},
+		'paint': PaintB
+	});	
+	map.on('click', 'TellurideLnLine', (e) => {		
+		const coordinates = e.features[0].geometry.coordinates.slice();
+		const description = e.features[0].properties.description;		
+		while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
+			coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
+		}	
+		new mapboxgl.Popup()
+			.setLngLat([-96.813004, 44.293442])
+			.setHTML(description)
+			.addTo(map);
+	});	
+	map.on('mouseenter', 'TellurideLnLine', () => {
+		map.getCanvas().style.cursor = 'pointer';
+	});	
+	map.on('mouseleave', 'TellurideLnLine', () => {
+		map.getCanvas().style.cursor = '';
+	});	
+	map.addSource('TellurideCir', {
+		'type': 'geojson',
+		'data': {
+			'type': 'Feature',
+			'properties': {
+				'description':
+					'<h3>Telluride Circle</h3><div><b>Dates?</b></div>',
+			},
+			'geometry': {
+			'type': 'LineString',
+				'coordinates': [
+					[-96.811526, 44.293975],
+					[-96.811508, 44.293248],
+					[-96.811544, 44.29324],
+					[-96.811587, 44.293199],
+					[-96.811554, 44.293143],
+					[-96.811494, 44.293125],
+					[-96.811433, 44.293148],
+					[-96.811404, 44.293194],
+					[-96.811443, 44.29323],
+					[-96.811511, 44.293253]
+				]
+			}
+		}
+	});
+	map.addLayer({
+		'id': 'TellurideCirOutline',
+		'type': 'line',
+		'source': 'TellurideCir',
+		'layout': {
+			'line-join': 'round',
+		},
+		'paint': PaintA
+	});
+	map.addLayer({
+		'id': 'TellurideCirLine',
+		'type': 'line',
+		'source': 'TellurideCir',
+		'layout': {
+			'line-join': 'round',
+		},
+		'paint': PaintB
+	});	
+	map.on('click', 'TellurideCirLine', (e) => {		
+		const coordinates = e.features[0].geometry.coordinates.slice();
+		const description = e.features[0].properties.description;		
+		while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
+			coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
+		}
+		new mapboxgl.Popup()
+			.setLngLat([-96.811433, 44.293148])
+			.setHTML(description)
+			.addTo(map);
+	});	
+	map.on('mouseenter', 'TellurideCirLine', () => {
+		map.getCanvas().style.cursor = 'pointer';
+	});	
+	map.on('mouseleave', 'TellurideCirLine', () => {
+		map.getCanvas().style.cursor = '';
+	});	
+	map.addSource('CopperMountainRd', {
+		'type': 'geojson',
+		'data': {
+			'type': 'Feature',
+			'properties': {
+				'description':
+					'<h3>Copper Mountain Road</h3><div><b>Dates?</b></div>',
+			},
+			'geometry': {
+			'type': 'LineString',
+				'coordinates': [
+					[-96.809689, 44.293958],
+					[-96.809657, 44.292634],
+					[-96.809632, 44.291697],
+					[-96.809632, 44.291322]
+				]
+			}
+		}
+	});
+	map.addLayer({
+		'id': 'CopperMountainRdOutline',
+		'type': 'line',
+		'source': 'CopperMountainRd',
+		'layout': {
+			'line-join': 'round',
+		},
+		'paint': PaintA
+	});
+	map.addLayer({
+		'id': 'CopperMountainRdLine',
+		'type': 'line',
+		'source': 'CopperMountainRd',
+		'layout': {
+			'line-join': 'round',
+		},
+		'paint': PaintB
+	});
+	map.on('click', 'CopperMountainRdLine', (e) => {		
+		const coordinates = e.features[0].geometry.coordinates.slice();
+		const description = e.features[0].properties.description;		
+		while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
+			coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
+		}		
+		new mapboxgl.Popup()
+			.setLngLat([-96.809632, 44.291697])
+			.setHTML(description)
+			.addTo(map);
+	});	
+	map.on('mouseenter', 'CopperMountainRdLine', () => {
+		map.getCanvas().style.cursor = 'pointer';
+	});	
+	map.on('mouseleave', 'CopperMountainRdLine', () => {
+		map.getCanvas().style.cursor = '';
+	});	
+	map.addSource('CopperMountainCir', {
+		'type': 'geojson',
+		'data': {
+			'type': 'Feature',
+			'properties': {
+				'description':
+					'<h3>Copper Mountain Circle</h3><div><b>Dates?</b></div>',
+			},
+			'geometry': {
+			'type': 'LineString',
+				'coordinates': [
+					[-96.80965, 44.292284],
+					[-96.811689, 44.29226],
+					[-96.811694, 44.292298],
+					[-96.811771, 44.292343],
+					[-96.811839, 44.292322],
+					[-96.811902, 44.292273],
+					[-96.811902, 44.292228],
+					[-96.811868, 44.292183],
+					[-96.811805, 44.292166],
+					[-96.811723, 44.292176],
+					[-96.811684, 44.292208],
+					[-96.811689, 44.29226]
+				]
+			}
+		}
+	});
+	map.addLayer({
+		'id': 'CopperMountainCirOutline',
+		'type': 'line',
+		'source': 'CopperMountainCir',
+		'layout': {
+			'line-join': 'round',
+		},
+		'paint': PaintA
+	});
+	map.addLayer({
+		'id': 'CopperMountainCirLine',
+		'type': 'line',
+		'source': 'CopperMountainCir',
+		'layout': {
+			'line-join': 'round',
+		},
+		'paint': PaintB
+	});
+	map.on('click', 'CopperMountainCirLine', (e) => {		
+		const coordinates = e.features[0].geometry.coordinates.slice();
+		const description = e.features[0].properties.description;		
+		while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
+			coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
+		}		
+		new mapboxgl.Popup()
+			.setLngLat([-96.811902, 44.292273])
+			.setHTML(description)
+			.addTo(map);
+	});	
+	map.on('mouseenter', 'CopperMountainCirLine', () => {
+		map.getCanvas().style.cursor = 'pointer';
+	});	
+	map.on('mouseleave', 'CopperMountainCirLine', () => {
+		map.getCanvas().style.cursor = '';
+	});	
+	map.addSource('SummitPass', {
+		'type': 'geojson',
+		'data': {
+			'type': 'Feature',
+			'properties': {
+				'description':
+					'<h3>Summit Pass</h3><div><b>Dates?</b></div>',
+			},
+			'geometry': {
+			'type': 'LineString',
+				'coordinates': [
+					[-96.808701, 44.29131],
+					[-96.814451, 44.29133]
+				]
+			}
+		}
+	});
+	map.addLayer({
+		'id': 'SummitPassOutline',
+		'type': 'line',
+		'source': 'SummitPass',
+		'layout': {
+			'line-join': 'round',
+		},
+		'paint': PaintA
+	});
+	map.addLayer({
+		'id': 'SummitPassLine',
+		'type': 'line',
+		'source': 'SummitPass',
+		'layout': {
+			'line-join': 'round',
+		},
+		'paint': PaintB
+	});
+	map.on('click', 'SummitPassLine', (e) => {		
+		const coordinates = e.features[0].geometry.coordinates.slice();
+		const description = e.features[0].properties.description;		
+		while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
+			coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
+		}		
+		new mapboxgl.Popup()
+			.setLngLat([-96.811576, 44.291132])
+			.setHTML(description)
+			.addTo(map);
+	});	
+	map.on('mouseenter', 'SummitPassLine', () => {
+		map.getCanvas().style.cursor = 'pointer';
+	});	
+	map.on('mouseleave', 'SummitPassLine', () => {
+		map.getCanvas().style.cursor = '';
+	});	
+	map.addSource('PowderhornPass', {
+		'type': 'geojson',
+		'data': {
+			'type': 'Feature',
+			'properties': {
+				'description':
+					'<h3>Powderhorn Pass</h3><div><b>Dates?</b></div>',
+			},
+			'geometry': {
+			'type': 'LineString',
+				'coordinates': [
+					[-96.813036, 44.291307],
+					[-96.81302, 44.290783],
+					[-96.81295, 44.290602],
+					[-96.812805, 44.290444],
+					[-96.81245, 44.290348],
+					[-96.812202, 44.29034],
+					[-96.810594, 44.290317],
+					[-96.810244, 44.290309],
+					[-96.809949, 44.290371],
+					[-96.809776, 44.290448],
+					[-96.809707, 44.29054],
+					[-96.80961, 44.290879],
+					[-96.809626, 44.291291]
+				]
+			}
+		}
+	});
+	map.addLayer({
+		'id': 'PowderhornPassOutline',
+		'type': 'line',
+		'source': 'PowderhornPass',
+		'layout': {
+			'line-join': 'round',
+		},
+		'paint': PaintA
+	});
+	map.addLayer({
+		'id': 'PowderhornPassLine',
+		'type': 'line',
+		'source': 'PowderhornPass',
+		'layout': {
+			'line-join': 'round',
+		},
+		'paint': PaintB
+	});	
+	map.on('click', 'PowderhornPassLine', (e) => {		
+		const coordinates = e.features[0].geometry.coordinates.slice();
+		const description = e.features[0].properties.description;		
+		while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
+			coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
+		}		
+		new mapboxgl.Popup()
+			.setLngLat([-96.810594, 44.290317])
+			.setHTML(description)
+			.addTo(map);
+	});	
+	map.on('mouseenter', 'PowderhornPassLine', () => {
+		map.getCanvas().style.cursor = 'pointer';
+	});	map.on('mouseleave', 'PowderhornPassLine', () => {
+		map.getCanvas().style.cursor = '';
+	});	
+	map.addSource('IndianHillsRd', {
+		'type': 'geojson',
+		'data': {
+			'type': 'Feature',
+			'properties': {
+				'description':
+					'<h3>Indian Hills Road</h3><div><b>Dates?</b></div>',
+			},
+			'geometry': {
+			'type': 'LineString',
+				'coordinates': [
+					[-96.803195, 44.293687],
+					[-96.803637, 44.293513],
+					[-96.803795, 44.293473],
+					[-96.803917, 44.293452],
+					[-96.804183, 44.293424],
+					[-96.804469, 44.293416],
+					[-96.804911, 44.29342],
+					[-96.805038, 44.29342],
+					[-96.805316, 44.2934],
+					[-96.805596, 44.293337],
+					[-96.805865, 44.293219],
+					[-96.806227, 44.292978],
+					[-96.806524, 44.29278],
+					[-96.806689, 44.292688],
+					[-96.806796, 44.292626],
+					[-96.807181, 44.292476],
+					[-96.807371, 44.292374],
+					[-96.80749, 44.292277],
+					[-96.807606, 44.292135],
+					[-96.807651, 44.292081],
+					[-96.807699, 44.291931],
+					[-96.807708, 44.291874],
+					[-96.807736, 44.291082],
+					[-96.80773, 44.290897],
+					[-96.807702, 44.290776],
+					[-96.8076, 44.290622],
+					[-96.807419, 44.290482],
+					[-96.807232, 44.290391],
+					[-96.807051, 44.290348],
+					[-96.806833, 44.290332],
+					[-96.806052, 44.290338],
+					[-96.805701, 44.290322],
+					[-96.805601, 44.290314],
+					[-96.805437, 44.290285],
+					[-96.805383, 44.290261],
+					[-96.804362, 44.289685],
+					[-96.803722, 44.289313],
+					[-96.803088, 44.28894]
+				]
+			}
+		}
+	});
+	map.addLayer({
+		'id': 'IndianHillsRdOutline',
+		'type': 'line',
+		'source': 'IndianHillsRd',
+		'layout': {
+			'line-join': 'round',
+		},
+		'paint': PaintA
+	});
+	map.addLayer({
+		'id': 'IndianHillsRdLine',
+		'type': 'line',
+		'source': 'IndianHillsRd',
+		'layout': {
+			'line-join': 'round',
+		},
+		'paint': PaintB
+	});	map.on('click', 'IndianHillsRdLine', (e) => {		
+		const coordinates = e.features[0].geometry.coordinates.slice();
+		const description = e.features[0].properties.description;		
+		while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
+			coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
+		}		
+		new mapboxgl.Popup()
+			.setLngLat([-96.806689, 44.292688])
+			.setHTML(description)
+			.addTo(map);
+	});	map.on('mouseenter', 'IndianHillsRdLine', () => {
+		map.getCanvas().style.cursor = 'pointer';
+	});	map.on('mouseleave', 'IndianHillsRdLine', () => {
+		map.getCanvas().style.cursor = '';
+	});	
+	map.addSource('ApacheTrail', {
+		'type': 'geojson',
+		'data': {
+			'type': 'Feature',
+			'properties': {
+				'description':
+					'<h3>Apache Trail</h3><div><b>Dates?</b></div>',
+			},
+			'geometry': {
+			'type': 'LineString',
+				'coordinates': [
+					[-96.80719, 44.292487],
+					[-96.807642, 44.292963],
+					[-96.807602, 44.292993],
+					[-96.8076, 44.293037],
+					[-96.807639, 44.293079],
+					[-96.807706, 44.293089],
+					[-96.807741, 44.293076],
+					[-96.807787, 44.293036],
+					[-96.807785, 44.292993],
+					[-96.807755, 44.292955],
+					[-96.807686, 44.292947],
+					[-96.807642, 44.292963]
+				]
+			}
+		}
+	});
+	map.addLayer({
+		'id': 'ApacheTrailOutline',
+		'type': 'line',
+		'source': 'ApacheTrail',
+		'layout': {
+			'line-join': 'round',
+		},
+		'paint': PaintA
+	});
+	map.addLayer({
+		'id': 'ApacheTrailLine',
+		'type': 'line',
+		'source': 'ApacheTrail',
+		'layout': {
+			'line-join': 'round',
+		},
+		'paint': PaintB
+	});	map.on('click', 'ApacheTrailLine', (e) => {		
+		const coordinates = e.features[0].geometry.coordinates.slice();
+		const description = e.features[0].properties.description;		
+		while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
+			coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
+		}
+		new mapboxgl.Popup()
+			.setLngLat([-96.807706, 44.293089])
+			.setHTML(description)
+			.addTo(map);
+	});	map.on('mouseenter', 'ApacheTrailLine', () => {
+		map.getCanvas().style.cursor = 'pointer';
+	});	map.on('mouseleave', 'ApacheTrailLine', () => {
+		map.getCanvas().style.cursor = '';
+	});	
+	map.addSource('EmeraldCir', {
+		'type': 'geojson',
+		'data': {
+			'type': 'Feature',
+			'properties': {
+				'description':
+					'<h3>Emerald Circle</h3><div><b>Dates?</b></div>',
+			},
+			'geometry': {
+			'type': 'LineString',
+				'coordinates': [
+					[-96.801178, 44.292593],
+					[-96.801115, 44.292767],
+					[-96.80111, 44.292869],
+					[-96.801133, 44.292996],
+					[-96.801097, 44.293011],
+					[-96.801074, 44.293039],
+					[-96.801077, 44.293082],
+					[-96.80111, 44.293113],
+					[-96.801171, 44.293126],
+					[-96.801217, 44.293115],
+					[-96.80124, 44.29308],
+					[-96.801243, 44.293029],
+					[-96.801199, 44.293005],
+					[-96.801153, 44.292996],
+					[-96.801133, 44.292995]
+				]
+			}
+		}
+	});
+	map.addLayer({
+		'id': 'EmeraldCirOutline',
+		'type': 'line',
+		'source': 'EmeraldCir',
+		'layout': {
+			'line-join': 'round',
+		},
+		'paint': PaintA
+	});
+	map.addLayer({
+		'id': 'EmeraldCirLine',
+		'type': 'line',
+		'source': 'EmeraldCir',
+		'layout': {
+			'line-join': 'round',
+		},
+		'paint': PaintB
+	});	map.on('click', 'EmeraldCirLine', (e) => {		
+		const coordinates = e.features[0].geometry.coordinates.slice();
+		const description = e.features[0].properties.description;		
+		while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
+			coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
+		}
+		new mapboxgl.Popup()
+			.setLngLat([-96.801077, 44.293082])
+			.setHTML(description)
+			.addTo(map);
+	});	map.on('mouseenter', 'EmeraldCirLine', () => {
+		map.getCanvas().style.cursor = 'pointer';
+	});	map.on('mouseleave', 'EmeraldCirLine', () => {
+		map.getCanvas().style.cursor = '';
+	});	
+	map.addSource('WahpetonPass', {
+		'type': 'geojson',
+		'data': {
+			'type': 'Feature',
+			'properties': {
+				'description':
+					'<h3>Wahpeton Pass</h3><div><b>Dates?</b></div>',
+			},
+			'geometry': {
+			'type': 'LineString',
+				'coordinates': [
+					[-96.805389, 44.290272],
+					[-96.805215, 44.290569],
+					[-96.805188, 44.290755],
+					[-96.805304, 44.290997],
+					[-96.805354, 44.29106],
+					[-96.805525, 44.291163],
+					[-96.805901, 44.291338],
+					[-96.806083, 44.291407],
+					[-96.80606, 44.291457],
+					[-96.806083, 44.291513],
+					[-96.806157, 44.291532],
+					[-96.806227, 44.291513],
+					[-96.806258, 44.29146],
+					[-96.806246, 44.291407],
+					[-96.806169, 44.291382],
+					[-96.806091, 44.291391],
+					[-96.806083, 44.291416]
+				]
+			}
+		}
+	});
+	map.addLayer({
+		'id': 'WahpetonPassOutline',
+		'type': 'line',
+		'source': 'WahpetonPass',
+		'layout': {
+			'line-join': 'round',
+		},
+		'paint': PaintA
+	});
+	map.addLayer({
+		'id': 'WahpetonPassLine',
+		'type': 'line',
+		'source': 'WahpetonPass',
+		'layout': {
+			'line-join': 'round',
+		},
+		'paint': PaintB
+	});	map.on('click', 'WahpetonPassLine', (e) => {		
+		const coordinates = e.features[0].geometry.coordinates.slice();
+		const description = e.features[0].properties.description;		
+		while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
+			coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
+		}
+		new mapboxgl.Popup()
+			.setLngLat([-96.80606, 44.291457])
+			.setHTML(description)
+			.addTo(map);
+	});	map.on('mouseenter', 'WahpetonPassLine', () => {
+		map.getCanvas().style.cursor = 'pointer';
+	});	map.on('mouseleave', 'WahpetonPassLine', () => {
+		map.getCanvas().style.cursor = '';
+	});	
+	map.addSource('TrailRidgeRd', {
+		'type': 'geojson',
+		'data': {
+			'type': 'Feature',
+			'properties': {
+				'description':
+					'<h3>Trail Ridge Road</h3><div><b>Dates?</b></div>',
+			},
+			'geometry': {
+			'type': 'LineString',
+				'coordinates': [
+					[-96.808658, 44.288037],
+					[-96.808382, 44.28803],
+					[-96.808027, 44.287945],
+					[-96.807751, 44.287797],
+					[-96.807406, 44.287614],
+					[-96.80715, 44.287515],
+					[-96.806746, 44.287451],
+					[-96.806293, 44.28743],
+					[-96.805771, 44.287529],
+					[-96.805288, 44.287705],
+					[-96.804953, 44.28791],
+					[-96.804539, 44.288093],
+					[-96.804155, 44.288227],
+					[-96.803849, 44.288347],
+					[-96.803573, 44.288531],
+					[-96.803278, 44.288756],
+					[-96.803071, 44.288947],
+					[-96.801396, 44.290329],
+					[-96.800637, 44.290971],
+					[-96.80043, 44.29119],
+					[-96.800223, 44.291627],
+					[-96.800055, 44.29205],
+					[-96.799918, 44.29222],
+					[-96.799583, 44.292368],
+					[-96.799297, 44.292438],
+					[-96.798725, 44.292466]
+				]
+			}
+		}
+	});
+	map.addLayer({
+		'id': 'TrailRidgeRdOutline',
+		'type': 'line',
+		'source': 'TrailRidgeRd',
+		'layout': {
+			'line-join': 'round',
+		},
+		'paint': PaintA
+	});
+	map.addLayer({
+		'id': 'TrailRidgeRdLine',
+		'type': 'line',
+		'source': 'TrailRidgeRd',
+		'layout': {
+			'line-join': 'round',
+		},
+		'paint': PaintB
+	});	map.on('click', 'TrailRidgeRdLine', (e) => {		
+		const coordinates = e.features[0].geometry.coordinates.slice();
+		const description = e.features[0].properties.description;		
+		while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
+			coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
+		}
+		new mapboxgl.Popup()
+			.setLngLat([-96.804953, 44.28791])
+			.setHTML(description)
+			.addTo(map);
+	});	map.on('mouseenter', 'TrailRidgeRdLine', () => {
+		map.getCanvas().style.cursor = 'pointer';
+	});	map.on('mouseleave', 'TrailRidgeRdLine', () => {
+		map.getCanvas().style.cursor = '';
+	});	
+	map.addSource('PineRidgeRd', {
+		'type': 'geojson',
+		'data': {
+			'type': 'FeatureCollection',
+			'features': [
+				{
+					'type': 'Feature',
+					'properties': {
+						'description':
+							'<h3>Pine Ridge Road</h3><div><b>Dates?</b></div>',
+					},
+					'geometry': {
+					'type': 'LineString',
+						'coordinates': [
+							[-96.807913, 44.287885],
+							[-96.807814, 44.288047],
+							[-96.807766, 44.288253],
+							[-96.807772, 44.288456],
+							[-96.807751, 44.288719],
+							[-96.80773, 44.28887],
+							[-96.80764, 44.289024],
+							[-96.807467, 44.289174],
+							[-96.807352, 44.28923],
+							[-96.807131, 44.289302],
+							[-96.807021, 44.289328],
+							[-96.806869, 44.289332],
+							[-96.804989, 44.289279],
+							[-96.804816, 44.289283],
+							[-96.804622, 44.289309],
+							[-96.804475, 44.289358],
+							[-96.804333, 44.289444],
+							[-96.80416, 44.289565]
+						]
+					}
+				},
+				{
+					'type': 'Feature',
+					'properties': {
+						'description':
+							'<h3>Pine Ridge Road</h3><div><b>Dates?</b></div>',
+					},
+					'geometry': {
+					'type': 'LineString',
+						'coordinates': [
+							[-96.805003, 44.289266],
+							[-96.804995, 44.289046],
+							[-96.805036, 44.289046],
+							[-96.805077, 44.289016],
+							[-96.805074, 44.288964],
+							[-96.805021, 44.288938],
+							[-96.804941, 44.288939],
+							[-96.804902, 44.288972],
+							[-96.804904, 44.289026],
+							[-96.804944, 44.289046],
+							[-96.804999, 44.289047]
+						]
+					}
+				}
+			]
+		}	
+	});
+	map.addLayer({
+		'id': 'PineRidgeRdOutline',
+		'type': 'line',
+		'source': 'PineRidgeRd',
+		'layout': {
+			'line-join': 'round',
+		},
+		'paint': PaintA
+	});
+	map.addLayer({
+		'id': 'PineRidgeRdLine',
+		'type': 'line',
+		'source': 'PineRidgeRd',
+		'layout': {
+			'line-join': 'round',
+		},
+		'paint': PaintB
+	});	map.on('click', 'PineRidgeRdLine', (e) => {		
+		const coordinates = e.features[0].geometry.coordinates.slice();
+		const description = e.features[0].properties.description;		
+		while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
+			coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
+		}
+		new mapboxgl.Popup()
+			.setLngLat([-96.807352, 44.28923])
+			.setHTML(description)
+			.addTo(map);
+	});	map.on('mouseenter', 'PineRidgeRdLine', () => {
+		map.getCanvas().style.cursor = 'pointer';
+	});	map.on('mouseleave', 'PineRidgeRdLine', () => {
+		map.getCanvas().style.cursor = '';
+	});	
+	map.addSource('SundancePass', {
+		'type': 'geojson',
+		'data': {
+			'type': 'Feature',
+			'properties': {
+				'description':
+					'<h3>Sundance Pass</h3><div><b>Dates?</b></div>',
+			},
+			'geometry': {
+			'type': 'LineString',
+				'coordinates': [
+					[-96.805162, 44.287813],
+					[-96.805458, 44.288079],
+					[-96.805704, 44.28821],
+					[-96.805869, 44.288264],
+					[-96.806084, 44.28831],
+					[-96.806481, 44.288372],
+					[-96.806469, 44.288412],
+					[-96.806496, 44.288455],
+					[-96.806577, 44.288462],
+					[-96.806611, 44.28843],
+					[-96.806617, 44.288392],
+					[-96.806605, 44.288357],
+					[-96.806565, 44.288347],
+					[-96.806511, 44.288358],
+					[-96.806481, 44.288375]
+				]
+			}
+		}
+	});
+	map.addLayer({
+		'id': 'SundancePassOutline',
+		'type': 'line',
+		'source': 'SundancePass',
+		'layout': {
+			'line-join': 'round',
+		},
+		'paint': PaintA
+	});
+	map.addLayer({
+		'id': 'SundancePassLine',
+		'type': 'line',
+		'source': 'SundancePass',
+		'layout': {
+			'line-join': 'round',
+		},
+		'paint': PaintB
+	});	map.on('click', 'SundancePassLine', (e) => {		
+		const coordinates = e.features[0].geometry.coordinates.slice();
+		const description = e.features[0].properties.description;		
+		while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
+			coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
+		}
+		new mapboxgl.Popup()
+			.setLngLat([-96.806469, 44.288412])
+			.setHTML(description)
+			.addTo(map);
+	});	map.on('mouseenter', 'SundancePassLine', () => {
+		map.getCanvas().style.cursor = 'pointer';
+	});	map.on('mouseleave', 'SundancePassLine', () => {
+		map.getCanvas().style.cursor = '';
+	});	
+	map.addSource('OverlookRidgeRd', {
+		'type': 'geojson',
+		'data': {
+			'type': 'FeatureCollection',
+			'features': [
+				{
+					'type': 'Feature',
+					'properties': {
+						'description':
+							'<h3>Overlook Ridge Road</h3><div><b>Dates?</b></div>',
+					},
+					'geometry': {
+					'type': 'LineString',
+						'coordinates': [
+							[-96.807482, 44.287639],
+							[-96.807633, 44.287455],
+							[-96.80772, 44.287291],
+							[-96.807742, 44.28718],
+							[-96.807767, 44.287042],
+							[-96.807781, 44.286802],
+							[-96.807806, 44.286374],
+							[-96.807817, 44.286163],
+							[-96.807806, 44.285805],
+							[-96.807773, 44.28529],
+							[-96.807787, 44.284596],
+							[-96.80779, 44.283942],
+							[-96.807734, 44.283713],
+							[-96.807577, 44.283525],
+							[-96.807404, 44.283385],
+							[-96.807118, 44.283263],
+							[-96.806791, 44.283197],
+							[-96.806419, 44.283197],
+							[-96.805963, 44.283209],
+							[-96.805359, 44.283229]
+						]
+					}
+				},
+				{
+					'type': 'Feature',
+					'properties': {
+						'description':
+							'<h3>Overlook Ridge Road</h3><div><b>Dates?</b></div>',
+					},
+					'geometry': {
+					'type': 'LineString',
+						'coordinates': [
+							[-96.807607, 44.283543],
+							[-96.80773, 44.283478],
+							[-96.807756, 44.283499],
+							[-96.807829, 44.283492],
+							[-96.80784, 44.283445],
+							[-96.807815, 44.283409],
+							[-96.807751, 44.283384],
+							[-96.807687, 44.283415],
+							[-96.807702, 44.283458],
+							[-96.807728, 44.283479]
+						]
+					}
+				}
+			]
+		}	
+	});
+	map.addLayer({
+		'id': 'OverlookRidgeRdOutline',
+		'type': 'line',
+		'source': 'OverlookRidgeRd',
+		'layout': {
+			'line-join': 'round',
+		},
+		'paint': PaintA
+	});
+	map.addLayer({
+		'id': 'OverlookRidgeRdLine',
+		'type': 'line',
+		'source': 'OverlookRidgeRd',
+		'layout': {
+			'line-join': 'round',
+		},
+		'paint': PaintB
+	});	map.on('click', 'OverlookRidgeRdLine', (e) => {		
+		const coordinates = e.features[0].geometry.coordinates.slice();
+		const description = e.features[0].properties.description;		
+		while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
+			coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
+		}
+		new mapboxgl.Popup()
+			.setLngLat([-96.807787, 44.284596])
+			.setHTML(description)
+			.addTo(map);
+	});	map.on('mouseenter', 'OverlookRidgeRdLine', () => {
+		map.getCanvas().style.cursor = 'pointer';
+	});	map.on('mouseleave', 'OverlookRidgeRdLine', () => {
+		map.getCanvas().style.cursor = '';
+	});
+	map.addSource('GrayOwlPass', {
+		'type': 'geojson',
+		'data': {
+			'type': 'Feature',
+			'properties': {
+				'description':
+					'<h3>Gray Owl Pass</h3><div><b>Dates?</b></div>',
+			},
+			'geometry': {
+			'type': 'LineString',
+				'coordinates': [
+					[-96.807816, 44.286151],
+					[-96.807366, 44.286142],
+					[-96.807145, 44.286151],
+					[-96.807028, 44.286167],
+					[-96.806853, 44.286217],
+					[-96.806719, 44.286279],
+					[-96.806532, 44.286416],
+					[-96.806433, 44.286526],
+					[-96.806336, 44.286512],
+					[-96.806224, 44.286522],
+					[-96.806181, 44.286589],
+					[-96.806191, 44.286656],
+					[-96.806281, 44.286693],
+					[-96.806397, 44.286722],
+					[-96.806507, 44.2867],
+					[-96.806572, 44.286667],
+					[-96.806594, 44.286602],
+					[-96.806544, 44.28655],
+					[-96.806433, 44.286526]
+				]
+			}
+		}
+	});
+	map.addLayer({
+		'id': 'GrayOwlPassOutline',
+		'type': 'line',
+		'source': 'GrayOwlPass',
+		'layout': {
+			'line-join': 'round',
+		},
+		'paint': PaintA
+	});
+	map.addLayer({
+		'id': 'GrayOwlPassLine',
+		'type': 'line',
+		'source': 'GrayOwlPass',
+		'layout': {
+			'line-join': 'round',
+		},
+		'paint': PaintB
+	});	map.on('click', 'GrayOwlPassLine', (e) => {		
+		const coordinates = e.features[0].geometry.coordinates.slice();
+		const description = e.features[0].properties.description;		
+		while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
+			coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
+		}
+		new mapboxgl.Popup()
+			.setLngLat([-96.806433, 44.286526])
+			.setHTML(description)
+			.addTo(map);
+	});	map.on('mouseenter', 'GrayOwlPassLine', () => {
+		map.getCanvas().style.cursor = 'pointer';
+	});	map.on('mouseleave', 'GrayOwlPassLine', () => {
+		map.getCanvas().style.cursor = '';
+	});	
+	map.addSource('FlintPass', {
+		'type': 'geojson',
+		'data': {
+			'type': 'Feature',
+			'properties': {
+				'description':
+					'<h3>Flint Pass</h3><div><b>Dates?</b></div>',
+			},
+			'geometry': {
+			'type': 'LineString',
+				'coordinates': [
+					[-96.807757, 44.285293],
+					[-96.807091, 44.285292],
+					[-96.807086, 44.285342],
+					[-96.807042, 44.285373],
+					[-96.806961, 44.285378],
+					[-96.8069, 44.285352],
+					[-96.806869, 44.285305],
+					[-96.806869, 44.285262],
+					[-96.8069, 44.285225],
+					[-96.806999, 44.285218],
+					[-96.807064, 44.285235],
+					[-96.807091, 44.285262],
+					[-96.807091, 44.285292]
+				]
+			}
+		}
+	});
+	map.addLayer({
+		'id': 'FlintPassOutline',
+		'type': 'line',
+		'source': 'FlintPass',
+		'layout': {
+			'line-join': 'round',
+		},
+		'paint': PaintA
+	});
+	map.addLayer({
+		'id': 'FlintPassLine',
+		'type': 'line',
+		'source': 'FlintPass',
+		'layout': {
+			'line-join': 'round',
+		},
+		'paint': PaintB
+	});	map.on('click', 'FlintPassLine', (e) => {		
+		const coordinates = e.features[0].geometry.coordinates.slice();
+		const description = e.features[0].properties.description;		
+		while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
+			coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
+		}
+		new mapboxgl.Popup()
+			.setLngLat([-96.8069, 44.285352])
+			.setHTML(description)
+			.addTo(map);
+	});	map.on('mouseenter', 'FlintPassLine', () => {
+		map.getCanvas().style.cursor = 'pointer';
+	});	map.on('mouseleave', 'FlintPassLine', () => {
+		map.getCanvas().style.cursor = '';
+	});	
+	map.addSource('TatankaPass', {
+		'type': 'geojson',
+		'data': {
+			'type': 'Feature',
+			'properties': {
+				'description':
+					'<h3>Tatanka Pass</h3><div><b>Dates?</b></div>',
+			},
+			'geometry': {
+			'type': 'LineString',
+				'coordinates': [
+					[-96.806425, 44.283206],
+					[-96.806491, 44.284185],
+					[-96.806468, 44.284383],
+					[-96.80654, 44.284396],
+					[-96.806589, 44.284453],
+					[-96.806587, 44.284513],
+					[-96.806532, 44.284554],
+					[-96.80645, 44.284563],
+					[-96.806347, 44.284534],
+					[-96.806325, 44.284479],
+					[-96.806314, 44.284419],
+					[-96.806362, 44.284391],
+					[-96.806472, 44.284382]
+				]
+			}
+		}
+	});
+	map.addLayer({
+		'id': 'TatankaPassOutline',
+		'type': 'line',
+		'source': 'TatankaPass',
+		'layout': {
+			'line-join': 'round',
+		},
+		'paint': PaintA
+	});
+	map.addLayer({
+		'id': 'TatankaPassLine',
+		'type': 'line',
+		'source': 'TatankaPass',
+		'layout': {
+			'line-join': 'round',
+		},
+		'paint': PaintB
+	});	map.on('click', 'TatankaPassLine', (e) => {		
+		const coordinates = e.features[0].geometry.coordinates.slice();
+		const description = e.features[0].properties.description;		
+		while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
+			coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
+		}
+		new mapboxgl.Popup()
+			.setLngLat([-96.806532, 44.284554])
+			.setHTML(description)
+			.addTo(map);
+	});	map.on('mouseenter', 'TatankaPassLine', () => {
+		map.getCanvas().style.cursor = 'pointer';
+	});	map.on('mouseleave', 'TatankaPassLine', () => {
+		map.getCanvas().style.cursor = '';
+	});	
+	map.addSource('TetonPass', {
+		'type': 'geojson',
+		'data': {
+			'type': 'Feature',
+			'properties': {
+				'description':
+					'<h3>Teton Pass</h3><div><b>Dates?</b></div>',
+			},
+			'geometry': {
+			'type': 'LineString',
+				'coordinates': [
+					[-96.804603, 44.284868],
+					[-96.804776, 44.284971],
+					[-96.804938, 44.285109],
+					[-96.805, 44.285178],
+					[-96.805084, 44.285304],
+					[-96.8052, 44.285481],
+					[-96.805272, 44.285554],
+					[-96.805383, 44.285614],
+					[-96.805438, 44.28565],
+					[-96.805633, 44.285703],
+					[-96.80559, 44.285762],
+					[-96.805604, 44.285819],
+					[-96.805638, 44.285853],
+					[-96.805708, 44.285865],
+					[-96.805766, 44.285833],
+					[-96.805831, 44.285779],
+					[-96.805809, 44.285717],
+					[-96.80578, 44.285672],
+					[-96.805705, 44.285657],
+					[-96.805643, 44.285676],
+					[-96.805633, 44.285703]
+				]
+			}
+		}
+	});
+	map.addLayer({
+		'id': 'TetonPassOutline',
+		'type': 'line',
+		'source': 'TetonPass',
+		'layout': {
+			'line-join': 'round',
+		},
+		'paint': PaintA
+	});
+	map.addLayer({
+		'id': 'TetonPassLine',
+		'type': 'line',
+		'source': 'TetonPass',
+		'layout': {
+			'line-join': 'round',
+		},
+		'paint': PaintB
+	});	map.on('click', 'TetonPassLine', (e) => {		
+		const coordinates = e.features[0].geometry.coordinates.slice();
+		const description = e.features[0].properties.description;		
+		while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
+			coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
+		}
+		new mapboxgl.Popup()
+			.setLngLat([-96.805633, 44.285703])
+			.setHTML(description)
+			.addTo(map);
+	});	map.on('mouseenter', 'TetonPassLine', () => {
+		map.getCanvas().style.cursor = 'pointer';
+	});	map.on('mouseleave', 'TetonPassLine', () => {
+		map.getCanvas().style.cursor = '';
+	});	
+	map.addSource('HalfMoonRd', {
+		'type': 'geojson',
+		'data': {
+			'type': 'Feature',
+			'properties': {
+				'description':
+					'<h3>Half Moon Road</h3><div><b>Dates?</b></div>',
+			},
+			'geometry': {
+			'type': 'LineString',
+				'coordinates': [
+					[-96.805334, 44.282541],
+					[-96.805368, 44.282735],
+					[-96.80534, 44.28349],
+					[-96.805328, 44.283655],
+					[-96.805282, 44.283824],
+					[-96.804982, 44.28443],
+					[-96.804798, 44.284665],
+					[-96.804597, 44.284863],
+					[-96.804274, 44.285094],
+					[-96.803859, 44.285362],
+					[-96.803466, 44.285557],
+					[-96.803161, 44.28566],
+					[-96.802878, 44.285734],
+					[-96.802602, 44.285788],
+					[-96.802228, 44.285833],
+					[-96.801796, 44.285854],
+					[-96.801081, 44.285854],
+					[-96.800592, 44.285849],
+					[-96.799422, 44.285841],
+					[-96.798875, 44.285837],
+					[-96.798731, 44.285837]
+				]
+			}
+		}
+	});
+	map.addLayer({
+		'id': 'HalfMoonRdOutline',
+		'type': 'line',
+		'source': 'HalfMoonRd',
+		'layout': {
+			'line-join': 'round',
+		},
+		'paint': PaintA
+	});
+	map.addLayer({
+		'id': 'HalfMoonRdLine',
+		'type': 'line',
+		'source': 'HalfMoonRd',
+		'layout': {
+			'line-join': 'round',
+		},
+		'paint': PaintB
+	});	map.on('click', 'HalfMoonRdLine', (e) => {		
+		const coordinates = e.features[0].geometry.coordinates.slice();
+		const description = e.features[0].properties.description;		
+		while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
+			coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
+		}
+		new mapboxgl.Popup()
+			.setLngLat([-96.803859, 44.285362])
+			.setHTML(description)
+			.addTo(map);
+	});	map.on('mouseenter', 'HalfMoonRdLine', () => {
+		map.getCanvas().style.cursor = 'pointer';
+	});	map.on('mouseleave', 'HalfMoonRdLine', () => {
+		map.getCanvas().style.cursor = '';
+	});	
+	map.addSource('MustangPass', {
+		'type': 'geojson',
+		'data': {
+			'type': 'Feature',
+			'properties': {
+				'description':
+					'<h3>Mustang Pass</h3><div><b>Dates?</b></div>',
+			},
+			'geometry': {
+			'type': 'LineString',
+				'coordinates': [
+					[-96.802661, 44.289287],
+					[-96.802325, 44.289103],
+					[-96.802215, 44.289043],
+					[-96.802094, 44.289005],
+					[-96.801915, 44.288949],
+					[-96.801779, 44.288934],
+					[-96.80139, 44.288937],
+					[-96.800582, 44.28893],
+					[-96.798745, 44.288922]
+				]
+			}
+		}
+	});
+	map.addLayer({
+		'id': 'MustangPassOutline',
+		'type': 'line',
+		'source': 'MustangPass',
+		'layout': {
+			'line-join': 'round',
+		},
+		'paint': PaintA
+	});
+	map.addLayer({
+		'id': 'MustangPassLine',
+		'type': 'line',
+		'source': 'MustangPass',
+		'layout': {
+			'line-join': 'round',
+		},
+		'paint': PaintB
+	});	map.on('click', 'MustangPassLine', (e) => {		
+		const coordinates = e.features[0].geometry.coordinates.slice();
+		const description = e.features[0].properties.description;		
+		while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
+			coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
+		}
+		new mapboxgl.Popup()
+			.setLngLat([-96.801915, 44.288949])
+			.setHTML(description)
+			.addTo(map);
+	});	map.on('mouseenter', 'MustangPassLine', () => {
+		map.getCanvas().style.cursor = 'pointer';
+	});	map.on('mouseleave', 'MustangPassLine', () => {
+		map.getCanvas().style.cursor = '';
+	});	
+	map.addSource('SiouxTrail', {
+		'type': 'geojson',
+		'data': {
+			'type': 'Feature',
+			'properties': {
+				'description':
+					'<h3>Sioux Trail</h3><div><b>Dates?</b></div>',
+			},
+			'geometry': {
+			'type': 'LineString',
+				'coordinates': [
+					[-96.800602, 44.288929],
+					[-96.800599, 44.28586]
+				]
+			}
+		}
+	});
+	map.addLayer({
+		'id': 'SiouxTrailOutline',
+		'type': 'line',
+		'source': 'SiouxTrail',
+		'layout': {
+			'line-join': 'round',
+		},
+		'paint': PaintA
+	});
+	map.addLayer({
+		'id': 'SiouxTrailLine',
+		'type': 'line',
+		'source': 'SiouxTrail',
+		'layout': {
+			'line-join': 'round',
+		},
+		'paint': PaintB
+	});	map.on('click', 'SiouxTrailLine', (e) => {		
+		const coordinates = e.features[0].geometry.coordinates.slice();
+		const description = e.features[0].properties.description;		
+		while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
+			coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
+		}
+		new mapboxgl.Popup()
+			.setLngLat([-96.800600, 44.2873945])
+			.setHTML(description)
+			.addTo(map);
+	});	map.on('mouseenter', 'SiouxTrailLine', () => {
+		map.getCanvas().style.cursor = 'pointer';
+	});	map.on('mouseleave', 'SiouxTrailLine', () => {
+		map.getCanvas().style.cursor = '';
+	});	
+	map.addSource('SiouxPass', {
+		'type': 'geojson',
+		'data': {
+			'type': 'Feature',
+			'properties': {
+				'description':
+					'<h3>Sioux Pass</h3><div><b>Dates?</b></div>',
+			},
+			'geometry': {
+			'type': 'LineString',
+				'coordinates': [
+					[-96.800602, 44.2876],
+					[-96.802238, 44.2876]
+				]
+			}
+		}
+	});
+	map.addLayer({
+		'id': 'SiouxPassOutline',
+		'type': 'line',
+		'source': 'SiouxPass',
+		'layout': {
+			'line-join': 'round',
+		},
+		'paint': PaintA
+	});
+	map.addLayer({
+		'id': 'SiouxPassLine',
+		'type': 'line',
+		'source': 'SiouxPass',
+		'layout': {
+			'line-join': 'round',
+		},
+		'paint': PaintB
+	});	map.on('click', 'SiouxPassLine', (e) => {		
+		const coordinates = e.features[0].geometry.coordinates.slice();
+		const description = e.features[0].properties.description;		
+		while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
+			coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
+		}
+		new mapboxgl.Popup()
+			.setLngLat([-96.80142, 44.2876])
+			.setHTML(description)
+			.addTo(map);
+	});	map.on('mouseenter', 'SiouxPassLine', () => {
+		map.getCanvas().style.cursor = 'pointer';
+	});	map.on('mouseleave', 'SiouxPassLine', () => {
+		map.getCanvas().style.cursor = '';
+	});	
+	map.addSource('BuffaloTrail', {
+		'type': 'geojson',
+		'data': {
+			'type': 'Feature',
+			'properties': {
+				'description':
+					'<h3>Buffalo Trail</h3><div><b>Dates?</b></div>',
+			},
+			'geometry': {
+			'type': 'LineString',
+				'coordinates': [
+					[-96.80222, 44.285837],
+					[-96.802261, 44.286181],
+					[-96.802264, 44.28672],
+					[-96.802263, 44.287602],
+					[-96.802272, 44.287948],
+					[-96.802179, 44.287953],
+					[-96.802103, 44.288001],
+					[-96.80214, 44.288091],
+					[-96.802205, 44.288136],
+					[-96.802294, 44.288138],
+					[-96.802367, 44.288103],
+					[-96.802406, 44.288055],
+					[-96.802411, 44.287998],
+					[-96.802365, 44.287956],
+					[-96.802268, 44.287947]
+				]
+			}
+		}
+	});
+	map.addLayer({
+		'id': 'BuffaloTrailOutline',
+		'type': 'line',
+		'source': 'BuffaloTrail',
+		'layout': {
+			'line-join': 'round',
+		},
+		'paint': PaintA
+	});
+	map.addLayer({
+		'id': 'BuffaloTrailLine',
+		'type': 'line',
+		'source': 'BuffaloTrail',
+		'layout': {
+			'line-join': 'round',
+		},
+		'paint': PaintB
+	});	map.on('click', 'BuffaloTrailLine', (e) => {		
+		const coordinates = e.features[0].geometry.coordinates.slice();
+		const description = e.features[0].properties.description;		
+		while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
+			coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
+		}
+		new mapboxgl.Popup()
+			.setLngLat([-96.80214, 44.288091])
+			.setHTML(description)
+			.addTo(map);
+	});	map.on('mouseenter', 'BuffaloTrailLine', () => {
+		map.getCanvas().style.cursor = 'pointer';
+	});	map.on('mouseleave', 'BuffaloTrailLine', () => {
+		map.getCanvas().style.cursor = '';
+	});	
+	map.addSource('CouncilRidgeRd', {
+		'type': 'geojson',
+		'data': {
+			'type': 'Feature',
+			'properties': {
+				'description':
+					'<h3Council Ridge Road</h3><div><b>Dates?</b></div>',
+			},
+			'geometry': {
+			'type': 'LineString',
+				'coordinates': [
+					[-96.805278, 44.283807],
+					[-96.80477, 44.283717],
+					[-96.804482, 44.283669],
+					[-96.804255, 44.283574],
+					[-96.804109, 44.283458],
+					[-96.804062, 44.283397],
+					[-96.804011, 44.283315],
+					[-96.80397, 44.283154],
+					[-96.803967, 44.282793],
+					[-96.80397, 44.282558]
+				]
+			}
+		}
+	});
+	map.addLayer({
+		'id': 'CouncilRidgeRdOutline',
+		'type': 'line',
+		'source': 'CouncilRidgeRd',
+		'layout': {
+			'line-join': 'round',
+		},
+		'paint': PaintA
+	});
+	map.addLayer({
+		'id': 'CouncilRidgeRdLine',
+		'type': 'line',
+		'source': 'CouncilRidgeRd',
+		'layout': {
+			'line-join': 'round',
+		},
+		'paint': PaintB
+	});	map.on('click', 'CouncilRidgeRdLine', (e) => {		
+		const coordinates = e.features[0].geometry.coordinates.slice();
+		const description = e.features[0].properties.description;		
+		while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
+			coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
+		}
+		new mapboxgl.Popup()
+			.setLngLat([-96.804109, 44.283458])
+			.setHTML(description)
+			.addTo(map);
+	});	map.on('mouseenter', 'CouncilRidgeRdLine', () => {
+		map.getCanvas().style.cursor = 'pointer';
+	});	map.on('mouseleave', 'CouncilRidgeRdLine', () => {
+		map.getCanvas().style.cursor = '';
+	});	
+	map.addSource('SanteeTrail', {
+		'type': 'geojson',
+		'data': {
+			'type': 'Feature',
+			'properties': {
+				'description':
+					'<h3>Santee Trail</h3><div><b>Dates?</b></div>',
+			},
+			'geometry': {
+			'type': 'LineString',
+				'coordinates': [
+					[-96.802871, 44.285733],
+					[-96.802568, 44.285117],
+					[-96.802557, 44.285098],
+					[-96.802489, 44.28504],
+					[-96.802399, 44.284991],
+					[-96.802341, 44.284965],
+					[-96.802275, 44.284956],
+					[-96.801982, 44.284948],
+					[-96.801765, 44.284914],
+					[-96.801612, 44.284828],
+					[-96.801538, 44.28473],
+					[-96.801515, 44.284543],
+					[-96.801517, 44.284415],
+					[-96.801523, 44.284283],
+					[-96.801543, 44.284173],
+					[-96.801615, 44.284066],
+					[-96.801728, 44.283989],
+					[-96.801876, 44.283945],
+					[-96.80197, 44.283928],
+					[-96.8023, 44.28393],
+					[-96.803087, 44.283933],
+					[-96.803454, 44.283837],
+					[-96.803835, 44.283624],
+					[-96.804083, 44.283453]
+				]
+			}
+		}
+	});
+	map.addLayer({
+		'id': 'SanteeTrailOutline',
+		'type': 'line',
+		'source': 'SanteeTrail',
+		'layout': {
+			'line-join': 'round',
+		},
+		'paint': PaintA
+	});
+	map.addLayer({
+		'id': 'SanteeTrailLine',
+		'type': 'line',
+		'source': 'SanteeTrail',
+		'layout': {
+			'line-join': 'round',
+		},
+		'paint': PaintB
+	});	map.on('click', 'SanteeTrailLine', (e) => {		
+		const coordinates = e.features[0].geometry.coordinates.slice();
+		const description = e.features[0].properties.description;		
+		while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
+			coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
+		}
+		new mapboxgl.Popup()
+			.setLngLat([-96.801538, 44.28473])
+			.setHTML(description)
+			.addTo(map);
+	});	map.on('mouseenter', 'SanteeTrailLine', () => {
+		map.getCanvas().style.cursor = 'pointer';
+	});	map.on('mouseleave', 'SanteeTrailLine', () => {
+		map.getCanvas().style.cursor = '';
+	});	
+	map.addSource('SanteePass', {
+		'type': 'geojson',
+		'data': {
+			'type': 'FeatureCollection',
+			'features': [
+				{
+					'type': 'Feature',
+					'properties': {
+						'description':
+							'<h3>Santee Pass</h3><div><b>Dates?</b></div>',
+					},
+					'geometry': {
+					'type': 'LineString',
+						'coordinates': [
+							[-96.801599, 44.284832],
+							[-96.801437, 44.284897],
+							[-96.801136, 44.284944],
+							[-96.800686, 44.284938],
+							[-96.800595, 44.284935],
+							[-96.800501, 44.284925],
+							[-96.800392, 44.284858],
+							[-96.800319, 44.284794],
+							[-96.800262, 44.284698],
+							[-96.800241, 44.284533],
+							[-96.800241, 44.284275],
+							[-96.80025, 44.284104],
+							[-96.800266, 44.283975],
+							[-96.800284, 44.283893],
+							[-96.800375, 44.283707],
+							[-96.800438, 44.283712],
+							[-96.800487, 44.283693],
+							[-96.800513, 44.283654],
+							[-96.800507, 44.283606],
+							[-96.800471, 44.283566],
+							[-96.800404, 44.283553],
+							[-96.800327, 44.283566],
+							[-96.800286, 44.2836],
+							[-96.800266, 44.283645],
+							[-96.800284, 44.28368],
+							[-96.800333, 44.2837],
+							[-96.800377, 44.283706]
+						]
+					}
+				},
+				{
+					'type': 'Feature',
+					'properties': {
+						'description':
+							'<h3>Santee Pass</h3><div><b>Dates?</b></div>',
+					},
+					'geometry': {
+					'type': 'LineString',
+						'coordinates': [
+							[-96.800491, 44.284932],
+							[-96.800373, 44.285005],
+							[-96.800311, 44.285011],
+							[-96.800259, 44.285003],
+							[-96.800223, 44.284984],
+							[-96.800193, 44.284942],
+							[-96.800195, 44.284893],
+							[-96.800229, 44.284848],
+							[-96.800305, 44.2848]
+						]
+					}
+				}
+			]
+		}	
+	});
+	map.addLayer({
+		'id': 'SanteePassOutline',
+		'type': 'line',
+		'source': 'SanteePass',
+		'layout': {
+			'line-join': 'round',
+		},
+		'paint': PaintA
+	});
+	map.addLayer({
+		'id': 'SanteePassLine',
+		'type': 'line',
+		'source': 'SanteePass',
+		'layout': {
+			'line-join': 'round',
+		},
+		'paint': PaintB
+	});	map.on('click', 'SanteePassLine', (e) => {		
+		const coordinates = e.features[0].geometry.coordinates.slice();
+		const description = e.features[0].properties.description;		
+		while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
+			coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
+		}
+		new mapboxgl.Popup()
+			.setLngLat([-96.800438, 44.283712])
+			.setHTML(description)
+			.addTo(map);
+	});	map.on('mouseenter', 'SanteePassLine', () => {
+		map.getCanvas().style.cursor = 'pointer';
+	});	map.on('mouseleave', 'SanteePassLine', () => {
+		map.getCanvas().style.cursor = '';
+	});	
+	map.addSource('EberleinDr', {
+		'type': 'geojson',
+		'data': {
+			'type': 'Feature',
+			'properties': {
+				'description':
+					'<h3>Eberlein Drive</h3><div><b>Dates?</b></div>',
+			},
+			'geometry': {
+			'type': 'LineString',
+				'coordinates': [
+					[-96.796681, 44.285276],
+					[-96.796676, 44.284566],
+					[-96.796661, 44.284453],
+					[-96.796643, 44.28437],
+					[-96.796599, 44.284287],
+					[-96.796484, 44.284122],
+					[-96.79636, 44.283955],
+					[-96.796322, 44.283882],
+					[-96.796306, 44.283832],
+					[-96.796291, 44.283763],
+					[-96.796285, 44.283646],
+					[-96.796283, 44.283558],
+					[-96.796281, 44.283166],
+					[-96.79628, 44.28254]
+				]
+			}
+		}
+	});
+	map.addLayer({
+		'id': 'EberleinDrOutline',
+		'type': 'line',
+		'source': 'EberleinDr',
+		'layout': {
+			'line-join': 'round',
+		},
+		'paint': PaintA
+	});
+	map.addLayer({
+		'id': 'EberleinDrLine',
+		'type': 'line',
+		'source': 'EberleinDr',
+		'layout': {
+			'line-join': 'round',
+		},
+		'paint': PaintB
+	});	map.on('click', 'EberleinDrLine', (e) => {		
+		const coordinates = e.features[0].geometry.coordinates.slice();
+		const description = e.features[0].properties.description;		
+		while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
+			coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
+		}
+		new mapboxgl.Popup()
+			.setLngLat([-96.796322, 44.283882])
+			.setHTML(description)
+			.addTo(map);
+	});	map.on('mouseenter', 'EberleinDrLine', () => {
+		map.getCanvas().style.cursor = 'pointer';
+	});	map.on('mouseleave', 'EberleinDrLine', () => {
+		map.getCanvas().style.cursor = '';
+	});	
+	map.addSource('FinchCir', {
+		'type': 'geojson',
+		'data': {
+			'type': 'Feature',
+			'properties': {
+				'description':
+					'<h3>Finch Circle</h3><div><b>Dates?</b></div>',
+			},
+			'geometry': {
+			'type': 'LineString',
+				'coordinates': [
+					[-96.796303, 44.283565],
+					[-96.79791, 44.28357],
+					[-96.797917, 44.283598],
+					[-96.797965, 44.283628],
+					[-96.798022, 44.283625],
+					[-96.798063, 44.2836],
+					[-96.798081, 44.283573],
+					[-96.798081, 44.28354],
+					[-96.798057, 44.283509],
+					[-96.798, 44.283498],
+					[-96.797919, 44.283507],
+					[-96.797906, 44.283542],
+					[-96.79791, 44.283573]
+				]
+			}
+		}
+	});
+	map.addLayer({
+		'id': 'FinchCirOutline',
+		'type': 'line',
+		'source': 'FinchCir',
+		'layout': {
+			'line-join': 'round',
+		},
+		'paint': PaintA
+	});
+	map.addLayer({
+		'id': 'FinchCirLine',
+		'type': 'line',
+		'source': 'FinchCir',
+		'layout': {
+			'line-join': 'round',
+		},
+		'paint': PaintB
+	});	map.on('click', 'FinchCirLine', (e) => {		
+		const coordinates = e.features[0].geometry.coordinates.slice();
+		const description = e.features[0].properties.description;		
+		while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
+			coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
+		}
+		new mapboxgl.Popup()
+			.setLngLat([-96.798081, 44.283573])
+			.setHTML(description)
+			.addTo(map);
+	});	map.on('mouseenter', 'FinchCirLine', () => {
+		map.getCanvas().style.cursor = 'pointer';
+	});	map.on('mouseleave', 'FinchCirLine', () => {
+		map.getCanvas().style.cursor = '';
+	});	
+	map.addSource('WrenCir', {
+		'type': 'geojson',
+		'data': {
+			'type': 'Feature',
+			'properties': {
+				'description':
+					'<h3>Wren Circle</h3><div><b>Dates?</b></div>',
+			},
+			'geometry': {
+			'type': 'LineString',
+				'coordinates': [
+					[-96.796672, 44.284455],
+					[-96.796989, 44.284422],
+					[-96.797176, 44.284417],
+					[-96.797319, 44.284416],
+					[-96.797916, 44.284413],
+					[-96.797923, 44.284453],
+					[-96.797957, 44.284482],
+					[-96.798042, 44.284489],
+					[-96.798087, 44.284464],
+					[-96.798114, 44.284427],
+					[-96.798108, 44.284401],
+					[-96.798078, 44.284371],
+					[-96.798018, 44.284356],
+					[-96.797955, 44.284367],
+					[-96.79792, 44.284387],
+					[-96.797918, 44.284413]
+				]
+			}
+		}
+	});
+	map.addLayer({
+		'id': 'WrenCirOutline',
+		'type': 'line',
+		'source': 'WrenCir',
+		'layout': {
+			'line-join': 'round',
+		},
+		'paint': PaintA
+	});
+	map.addLayer({
+		'id': 'WrenCirLine',
+		'type': 'line',
+		'source': 'WrenCir',
+		'layout': {
+			'line-join': 'round',
+		},
+		'paint': PaintB
+	});	map.on('click', 'WrenCirLine', (e) => {		
+		const coordinates = e.features[0].geometry.coordinates.slice();
+		const description = e.features[0].properties.description;		
+		while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
+			coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
+		}
+		new mapboxgl.Popup()
+			.setLngLat([-96.798087, 44.284464])
+			.setHTML(description)
+			.addTo(map);
+	});	map.on('mouseenter', 'WrenCirLine', () => {
+		map.getCanvas().style.cursor = 'pointer';
+	});	map.on('mouseleave', 'WrenCirLine', () => {
+		map.getCanvas().style.cursor = '';
+	});	
+	map.addSource('OrioleTrail', {
+		'type': 'geojson',
+		'data': {
+			'type': 'FeatureCollection',
+			'features': [
+				{
+					'type': 'Feature',
+					'properties': {
+						'description':
+							'<h3>Oriole Trail</h3><div><b>Dates?</b></div>',
+					},
+					'geometry': {
+					'type': 'LineString',
+						'coordinates': [
+							[-96.796466, 44.284131],
+							[-96.795955, 44.284325],
+							[-96.795754, 44.284371],
+							[-96.795632, 44.284381],
+							[-96.795071, 44.284375],
+							[-96.795067, 44.284135],
+							[-96.795063, 44.283416],
+							[-96.79506, 44.282529]
+						]
+					}
+				},
+				{
+					'type': 'Feature',
+					'properties': {
+						'description':
+							'<h3>Oriole Trail</h3><div><b>Dates?</b></div>',
+					},
+					'geometry': {
+					'type': 'LineString',
+						'coordinates': [
+							[-96.795172, 44.284377],
+							[-96.795174, 44.284454],
+							[-96.795105, 44.284516],
+							[-96.794987, 44.284535],
+							[-96.794852, 44.284499],
+							[-96.794813, 44.284416],
+							[-96.794884, 44.284348],
+							[-96.794973, 44.284327],
+							[-96.795069, 44.284328]
+						]
+					}
+				}
+			]
+		}	
+	});
+	map.addLayer({
+		'id': 'OrioleTrailOutline',
+		'type': 'line',
+		'source': 'OrioleTrail',
+		'layout': {
+			'line-join': 'round',
+		},
+		'paint': PaintA
+	});
+	map.addLayer({
+		'id': 'OrioleTrailLine',
+		'type': 'line',
+		'source': 'OrioleTrail',
+		'layout': {
+			'line-join': 'round',
+		},
+		'paint': PaintB
+	});	map.on('click', 'OrioleTrailLine', (e) => {		
+		const coordinates = e.features[0].geometry.coordinates.slice();
+		const description = e.features[0].properties.description;		
+		while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
+			coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
+		}
+		new mapboxgl.Popup()
+			.setLngLat([-96.795071, 44.284375])
+			.setHTML(description)
+			.addTo(map);
+	});	map.on('mouseenter', 'OrioleTrailLine', () => {
+		map.getCanvas().style.cursor = 'pointer';
+	});	map.on('mouseleave', 'OrioleTrailLine', () => {
+		map.getCanvas().style.cursor = '';
+	});	
+	map.addSource('19thStS', {
+		'type': 'geojson',
+		'data': {
+			'type': 'Feature',
+			'properties': {
+				'description':
+					'<h3>19th St S</h3><div><b>Dates?</b></div>',
+			},
+			'geometry': {
+			'type': 'LineString',
+				'coordinates': [
+					[-96.790276, 44.283239],
+					[-96.791218, 44.283249],
+					[-96.791818, 44.283255],
+					[-96.792007, 44.283257],
+					[-96.792602, 44.283257],
+					[-96.793681, 44.283258]
+				]
+			}
+		}
+	});
+	map.addLayer({
+		'id': '19thStSOutline',
+		'type': 'line',
+		'source': '19thStS',
+		'layout': {
+			'line-join': 'round',
+		},
+		'paint': PaintA
+	});
+	map.addLayer({
+		'id': '19thStSLine',
+		'type': 'line',
+		'source': '19thStS',
+		'layout': {
+			'line-join': 'round',
+		},
+		'paint': PaintB
+	});	map.on('click', '19thStSLine', (e) => {		
+		const coordinates = e.features[0].geometry.coordinates.slice();
+		const description = e.features[0].properties.description;		
+		while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
+			coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
+		}
+		new mapboxgl.Popup()
+			.setLngLat([-96.792007, 44.283257])
+			.setHTML(description)
+			.addTo(map);
+	});	map.on('mouseenter', '19thStSLine', () => {
+		map.getCanvas().style.cursor = 'pointer';
+	});	map.on('mouseleave', '19thStSLine', () => {
+		map.getCanvas().style.cursor = '';
+	});	
+	map.addSource('RangeCir', {
+		'type': 'geojson',
+		'data': {
+			'type': 'Feature',
+			'properties': {
+				'description':
+					'<h3>Range Circle</h3><div><b>Dates?</b></div>',
+			},
+			'geometry': {
+			'type': 'LineString',
+				'coordinates': [
+					[-96.792004, 44.283269],
+					[-96.792009, 44.283387],
+					[-96.792025, 44.283482],
+					[-96.792045, 44.283576],
+					[-96.7921, 44.283757],
+					[-96.792213, 44.284134],
+					[-96.792275, 44.284132],
+					[-96.792309, 44.284157],
+					[-96.792343, 44.28421],
+					[-96.792327, 44.284259],
+					[-96.792268, 44.284293],
+					[-96.792216, 44.284298],
+					[-96.792175, 44.284277],
+					[-96.792118, 44.284236],
+					[-96.792123, 44.284189],
+					[-96.79215, 44.284157],
+					[-96.792213, 44.284132]
+				]
+			}
+		}
+	});
+	map.addLayer({
+		'id': 'RangeCirOutline',
+		'type': 'line',
+		'source': 'RangeCir',
+		'layout': {
+			'line-join': 'round',
+		},
+		'paint': PaintA
+	});
+	map.addLayer({
+		'id': 'RangeCirLine',
+		'type': 'line',
+		'source': 'RangeCir',
+		'layout': {
+			'line-join': 'round',
+		},
+		'paint': PaintB
+	});	map.on('click', 'RangeCirLine', (e) => {		
+		const coordinates = e.features[0].geometry.coordinates.slice();
+		const description = e.features[0].properties.description;		
+		while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
+			coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
+		}
+		new mapboxgl.Popup()
+			.setLngLat([-96.792343, 44.28421])
+			.setHTML(description)
+			.addTo(map);
+	});	map.on('mouseenter', 'RangeCirLine', () => {
+		map.getCanvas().style.cursor = 'pointer';
+	});	map.on('mouseleave', 'RangeCirLine', () => {
+		map.getCanvas().style.cursor = '';
+	});	
+	map.addSource('HuntersRidge', {
+		'type': 'geojson',
+		'data': {
+			'type': 'Feature',
+			'properties': {
+				'description':
+					'<h3>Hunters Ridge Road</h3><div><b>Dates?</b></div>',
+			},
+			'geometry': {
+			'type': 'LineString',
+				'coordinates': [
+					[-96.798686, 44.285279],
+					[-96.793716, 44.285298],
+					[-96.791231, 44.285352],
+					[-96.791442, 44.28531],
+					[-96.791613, 44.285303],
+					[-96.792374, 44.2853],
+					[-96.793684, 44.285295]
+				]
+			}
+		}
+	});
+	map.addLayer({
+		'id': 'HuntersRidgeOutline',
+		'type': 'line',
+		'source': 'HuntersRidge',
+		'layout': {
+			'line-join': 'round',
+		},
+		'paint': PaintA
+	});
+	map.addLayer({
+		'id': 'HuntersRidgeLine',
+		'type': 'line',
+		'source': 'HuntersRidge',
+		'layout': {
+			'line-join': 'round',
+		},
+		'paint': PaintB
+	});	map.on('click', 'HuntersRidgeLine', (e) => {		
+		const coordinates = e.features[0].geometry.coordinates.slice();
+		const description = e.features[0].properties.description;		
+		while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
+			coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
+		}
+		new mapboxgl.Popup()
+			.setLngLat([-96.791442, 44.28531])
+			.setHTML(description)
+			.addTo(map);
+	});	map.on('mouseenter', 'HuntersRidgeLine', () => {
+		map.getCanvas().style.cursor = 'pointer';
+	});	map.on('mouseleave', 'HuntersRidgeLine', () => {
+		map.getCanvas().style.cursor = '';
+	});	
+	map.addSource('9thAveS', {
+		'type': 'geojson',
+		'data': {
+			'type': 'Feature',
+			'properties': {
+				'description':
+					'<h3>9th Ave S</h3><div><b>Dates?</b></div>',
+			},
+			'geometry': {
+			'type': 'LineString',
+				'coordinates': [
+					[-96.791814, 44.286639],
+					[-96.7903, 44.283373],
+					[-96.790279, 44.283331],
+					[-96.790262, 44.283268],
+					[-96.790261, 44.283235],
+					[-96.790268, 44.282504]
+				]
+			}
+		}
+	});
+	map.addLayer({
+		'id': '9thAveSOutline',
+		'type': 'line',
+		'source': '9thAveS',
+		'layout': {
+			'line-join': 'round',
+		},
+		'paint': PaintA
+	});
+	map.addLayer({
+		'id': '9thAveSLine',
+		'type': 'line',
+		'source': '9thAveS',
+		'layout': {
+			'line-join': 'round',
+		},
+		'paint': PaintB
+	});	map.on('click', '9thAveSLine', (e) => {		
+		const coordinates = e.features[0].geometry.coordinates.slice();
+		const description = e.features[0].properties.description;		
+		while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
+			coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
+		}
+		new mapboxgl.Popup()
+			.setLngLat([-96.790279, 44.283331])
+			.setHTML(description)
+			.addTo(map);
+	});	map.on('mouseenter', '9thAveSLine', () => {
+		map.getCanvas().style.cursor = 'pointer';
+	});	map.on('mouseleave', '9thAveSLine', () => {
+		map.getCanvas().style.cursor = '';
+	});	
+	map.addSource('17thStS', {
+		'type': 'geojson',
+		'data': {
+			'type': 'Feature',
+			'properties': {
+				'description':
+					'<h3>17th St S</h3><div><b>Dates?</b></div>',
+			},
+			'geometry': {
+			'type': 'LineString',
+				'coordinates': [
+					[-96.793705, 44.286692],
+					[-96.791949, 44.286701],
+					[-96.791852, 44.28668],
+					[-96.791814, 44.28664]
+				]
+			}
+		}
+	});
+	map.addLayer({
+		'id': '17thStSOutline',
+		'type': 'line',
+		'source': '17thStS',
+		'layout': {
+			'line-join': 'round',
+		},
+		'paint': PaintA
+	});
+	map.addLayer({
+		'id': '17thStSLine',
+		'type': 'line',
+		'source': '17thStS',
+		'layout': {
+			'line-join': 'round',
+		},
+		'paint': PaintB
+	});	map.on('click', '17thStSLine', (e) => {		
+		const coordinates = e.features[0].geometry.coordinates.slice();
+		const description = e.features[0].properties.description;		
+		while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
+			coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
+		}
+		new mapboxgl.Popup()
+			.setLngLat([-96.791852, 44.28668])
+			.setHTML(description)
+			.addTo(map);
+	});	map.on('mouseenter', '17thStSLine', () => {
+		map.getCanvas().style.cursor = 'pointer';
+	});	map.on('mouseleave', '17thStSLine', () => {
+		map.getCanvas().style.cursor = '';
+	});	
+	map.addSource('LeprechaunCir', {
+		'type': 'geojson',
+		'data': {
+			'type': 'Feature',
+			'properties': {
+				'description':
+					'<h3>Leprechaun Circle</h3><div><b>Dates?</b></div>',
+			},
+			'geometry': {
+			'type': 'LineString',
+				'coordinates': [
+					[-96.79154, 44.286006],
+					[-96.792366, 44.286003],
+					[-96.792373, 44.286039],
+					[-96.792416, 44.286061],
+					[-96.792466, 44.286053],
+					[-96.792499, 44.286028],
+					[-96.792511, 44.285995],
+					[-96.792493, 44.285969],
+					[-96.792439, 44.285955],
+					[-96.792389, 44.285964],
+					[-96.792366, 44.285987],
+					[-96.792367, 44.286003]
+				]
+			}
+		}
+	});
+	map.addLayer({
+		'id': 'LeprechaunCirOutline',
+		'type': 'line',
+		'source': 'LeprechaunCir',
+		'layout': {
+			'line-join': 'round',
+		},
+		'paint': PaintA
+	});
+	map.addLayer({
+		'id': 'LeprechaunCirLine',
+		'type': 'line',
+		'source': 'LeprechaunCir',
+		'layout': {
+			'line-join': 'round',
+		},
+		'paint': PaintB
+	});	map.on('click', 'LeprechaunCirLine', (e) => {		
+		const coordinates = e.features[0].geometry.coordinates.slice();
+		const description = e.features[0].properties.description;		
+		while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
+			coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
+		}
+		new mapboxgl.Popup()
+			.setLngLat([-96.807467, 44.294895])
+			.setHTML(description)
+			.addTo(map);
+	});	map.on('mouseenter', 'LeprechaunCirLine', () => {
+		map.getCanvas().style.cursor = 'pointer';
+	});	map.on('mouseleave', 'LeprechaunCirLine', () => {
+		map.getCanvas().style.cursor = '';
+	});	
+	map.addSource('PheasantRunRd', {
+		'type': 'geojson',
+		'data': {
+			'type': 'Feature',
+			'properties': {
+				'description':
+					'<h3>Pheasant Run Road</h3><div><b>Dates?</b></div>',
+			},
+			'geometry': {
+			'type': 'LineString',
+				'coordinates': [
+					[-96.789969, 44.297037],
+					[-96.789946, 44.296635],
+					[-96.789977, 44.296351],
+					[-96.790117, 44.296116],
+					[-96.790609, 44.295497],
+					[-96.791443, 44.294453],
+					[-96.791996, 44.293806],
+					[-96.792182, 44.293555],
+					[-96.792303, 44.293375],
+					[-96.79234, 44.293299],
+					[-96.792386, 44.293191],
+					[-96.792408, 44.293063],
+					[-96.792432, 44.292678],
+					[-96.792453, 44.292361],
+					[-96.792457, 44.292327],
+					[-96.792466, 44.292087],
+					[-96.792445, 44.291927],
+					[-96.792407, 44.29181],
+					[-96.792323, 44.291653],
+					[-96.792222, 44.291533],
+					[-96.792087, 44.291418],
+					[-96.791881, 44.291274],
+					[-96.79181, 44.291235],
+					[-96.791658, 44.291175],
+					[-96.791507, 44.291121],
+					[-96.791309, 44.291072],
+					[-96.791057, 44.291039],
+					[-96.790649, 44.291033],
+					[-96.790322, 44.291039],
+					[-96.789779, 44.291045],
+					[-96.789704, 44.291048],
+					[-96.789338, 44.291048],
+					[-96.788913, 44.291045],
+					[-96.788636, 44.291045]
+				]
+			}
+		}
+	});
+	map.addLayer({
+		'id': 'PheasantRunRdOutline',
+		'type': 'line',
+		'source': 'PheasantRunRd',
+		'layout': {
+			'line-join': 'round',
+		},
+		'paint': PaintA
+	});
+	map.addLayer({
+		'id': 'PheasantRunRdLine',
+		'type': 'line',
+		'source': 'PheasantRunRd',
+		'layout': {
+			'line-join': 'round',
+		},
+		'paint': PaintB
+	});	map.on('click', 'PheasantRunRdLine', (e) => {		
+		const coordinates = e.features[0].geometry.coordinates.slice();
+		const description = e.features[0].properties.description;		
+		while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
+			coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
+		}
+		new mapboxgl.Popup()
+			.setLngLat([-96.792457, 44.292327])
+			.setHTML(description)
+			.addTo(map);
+	});	map.on('mouseenter', 'PheasantRunRdLine', () => {
+		map.getCanvas().style.cursor = 'pointer';
+	});	map.on('mouseleave', 'PheasantRunRdLine', () => {
+		map.getCanvas().style.cursor = '';
+	});	
+	map.addSource('PheasantRunCir', {
+		'type': 'geojson',
+		'data': {
+			'type': 'Feature',
+			'properties': {
+				'description':
+					'<h3>Pheasant Run Circle</h3><div><b>Dates?</b></div>',
+			},
+			'geometry': {
+			'type': 'LineString',
+				'coordinates': [
+					[-96.789698, 44.291038],
+					[-96.789701, 44.290499],
+					[-96.789741, 44.290495],
+					[-96.789773, 44.290468],
+					[-96.789775, 44.290424],
+					[-96.789753, 44.290402],
+					[-96.789704, 44.290388],
+					[-96.78964, 44.290391],
+					[-96.789597, 44.29041],
+					[-96.789591, 44.29044],
+					[-96.789597, 44.290481],
+					[-96.789642, 44.290503],
+					[-96.789681, 44.290503],
+					[-96.789702, 44.290498]
+				]
+			}
+		}
+	});
+	map.addLayer({
+		'id': 'PheasantRunCirOutline',
+		'type': 'line',
+		'source': 'PheasantRunCir',
+		'layout': {
+			'line-join': 'round',
+		},
+		'paint': PaintA
+	});
+	map.addLayer({
+		'id': 'PheasantRunCirLine',
+		'type': 'line',
+		'source': 'PheasantRunCir',
+		'layout': {
+			'line-join': 'round',
+		},
+		'paint': PaintB
+	});	map.on('click', 'PheasantRunCirLine', (e) => {		
+		const coordinates = e.features[0].geometry.coordinates.slice();
+		const description = e.features[0].properties.description;		
+		while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
+			coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
+		}
+		new mapboxgl.Popup()
+			.setLngLat([-96.789704, 44.290388])
+			.setHTML(description)
+			.addTo(map);
+	});	map.on('mouseenter', 'PheasantRunCirLine', () => {
+		map.getCanvas().style.cursor = 'pointer';
+	});	map.on('mouseleave', 'PheasantRunCirLine', () => {
+		map.getCanvas().style.cursor = '';
+	});	
+	map.addSource('ArrowheadPass', {
+		'type': 'geojson',
+		'data': {
+			'type': 'Feature',
+			'properties': {
+				'description':
+					'<h3>Arrowhead Pass</h3><div><b>Dates?</b></div>',
+			},
+			'geometry': {
+			'type': 'LineString',
+				'coordinates': [
+					[-96.793763, 44.294204],
+					[-96.793052, 44.29421],
+					[-96.792969, 44.294194],
+					[-96.79289, 44.294162],
+					[-96.792025, 44.293819],
+					[-96.792002, 44.293808],
+					[-96.791153, 44.293446],
+					[-96.790816, 44.293356],
+					[-96.790388, 44.293326],
+					[-96.789904, 44.293321],
+					[-96.788893, 44.293295],
+					[-96.788612, 44.29329]
+				]
+			}
+		}
+	});
+	map.addLayer({
+		'id': 'ArrowheadPassOutline',
+		'type': 'line',
+		'source': 'ArrowheadPass',
+		'layout': {
+			'line-join': 'round',
+		},
+		'paint': PaintA
+	});
+	map.addLayer({
+		'id': 'ArrowheadPassLine',
+		'type': 'line',
+		'source': 'ArrowheadPass',
+		'layout': {
+			'line-join': 'round',
+		},
+		'paint': PaintB
+	});	map.on('click', 'ArrowheadPassLine', (e) => {		
+		const coordinates = e.features[0].geometry.coordinates.slice();
+		const description = e.features[0].properties.description;		
+		while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
+			coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
+		}
+		new mapboxgl.Popup()
+			.setLngLat([-96.792002, 44.293808])
+			.setHTML(description)
+			.addTo(map);
+	});	map.on('mouseenter', 'ArrowheadPassLine', () => {
+		map.getCanvas().style.cursor = 'pointer';
+	});	map.on('mouseleave', 'ArrowheadPassLine', () => {
+		map.getCanvas().style.cursor = '';
+	});	
+	map.addSource('CandlewoodLn', {
+		'type': 'geojson',
+		'data': {
+			'type': 'Feature',
+			'properties': {
+				'description':
+					'<h3>Candlewood Lane</h3><div><b>Dates?</b></div>',
+			},
+			'geometry': {
+			'type': 'LineString',
+				'coordinates': [
+					[-96.792709, 44.297041],
+					[-96.792702, 44.295831],
+					[-96.792702, 44.295589],
+					[-96.792637, 44.29542],
+					[-96.792515, 44.29527],
+					[-96.792371, 44.295142],
+					[-96.792248, 44.29507],
+					[-96.791889, 44.294905],
+					[-96.791479, 44.294745],
+					[-96.791292, 44.294668],
+					[-96.791265, 44.294659],
+					[-96.790633, 44.294403],
+					[-96.790443, 44.294353],
+					[-96.790276, 44.294335],
+					[-96.790142, 44.294331],
+					[-96.788631, 44.294287]
+				]
+			}
+		}
+	});
+	map.addLayer({
+		'id': 'CandlewoodLnOutline',
+		'source': 'CandlewoodLn',
+		'type': 'line',
+		'layout': {
+			'line-join': 'round',
+		},
+		'paint': PaintA
+	});
+	map.addLayer({
+		'id': 'CandlewoodLnLine',
+		'source': 'CandlewoodLn',
+		'type': 'line',
+		'layout': {
+			'line-join': 'round',
+		},
+		'paint': PaintB
+	});	map.on('click', 'CandlewoodLnLine', (e) => {		
+		const coordinates = e.features[0].geometry.coordinates.slice();
+		const description = e.features[0].properties.description;		
+		while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
+			coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
+		}
+		new mapboxgl.Popup()
+			.setLngLat([-96.791889, 44.294905])
+			.setHTML(description)
+			.addTo(map);
+	});	map.on('mouseenter', 'CandlewoodLnLine', () => {
+		map.getCanvas().style.cursor = 'pointer';
+	});	map.on('mouseleave', 'CandlewoodLnLine', () => {
+		map.getCanvas().style.cursor = '';
+	});	
+	map.addSource('PamelaDr', {
+		'type': 'geojson',
+		'data': {
+			'type': 'Feature',
+			'properties': {
+				'description':
+					'<h3>Pamela Drive</h3><div><b>Dates?</b></div>',
+			},
+			'geometry': {
+			'type': 'LineString',
+				'coordinates': [
+					[-96.791235, 44.297004],
+					[-96.791219, 44.29624],
+					[-96.791192, 44.296066],
+					[-96.791125, 44.29594],
+					[-96.790964, 44.295786],
+					[-96.790551, 44.2956],
+					[-96.790521, 44.295584],
+					[-96.789995, 44.295355],
+					[-96.789662, 44.295254],
+					[-96.789336, 44.295212],
+					[-96.788632, 44.295211]
+				]
+			}
+		}
+	});
+	map.addLayer({
+		'id': 'PamelaDrOutline',
+		'type': 'line',
+		'source': 'PamelaDr',
+		'layout': {
+			'line-join': 'round',
+		},
+		'paint': PaintA
+	});
+	map.addLayer({
+		'id': 'PamelaDrLine',
+		'source': 'PamelaDr',
+		'type': 'line',		
+		'layout': {
+			'line-join': 'round',
+		},
+		'paint': PaintB
+	});	map.on('click', 'PamelaDrLine', (e) => {		
+		const coordinates = e.features[0].geometry.coordinates.slice();
+		const description = e.features[0].properties.description;		
+		while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
+			coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
+		}
+		new mapboxgl.Popup()
+			.setLngLat([-96.790551, 44.2956])
+			.setHTML(description)
+			.addTo(map);
+	});	map.on('mouseenter', 'PamelaDrLine', () => {
+		map.getCanvas().style.cursor = 'pointer';
+	});	map.on('mouseleave', 'PamelaDrLine', () => {
+		map.getCanvas().style.cursor = '';
+	});	
+	map.addSource('MockingbirdLane', {
+		'type': 'geojson',
+		'data': {
+			'type': 'Feature',
+			'properties': {
+				'description':
+					'<h3>Mockingbird Lane</h3><div><b>Dates?</b></div>',
+			},
+			'geometry': {
+			'type': 'LineString',
+				'coordinates': [
+					[-96.797941, 44.28529],
+					[-96.797944, 44.286145],
+					[-96.798011, 44.286161],
+					[-96.79803, 44.286201],
+					[-96.79802, 44.28626],
+					[-96.797968, 44.286295],
+					[-96.797907, 44.286305],
+					[-96.797859, 44.286292],
+					[-96.797828, 44.286226],
+					[-96.797845, 44.28616],
+					[-96.797911, 44.286144],
+					[-96.797945, 44.286145]
+				]
+			}
+		}
+	});
+	map.addLayer({
+		'id': 'MockingbirdLaneOutline',
+		'type': 'line',
+		'source': 'MockingbirdLane',
+		'layout': {
+			'line-join': 'round',
+		},
+		'paint': PaintA
+	});
+	map.addLayer({
+		'id': 'MockingbirdLaneLine',
+		'type': 'line',
+		'source': 'MockingbirdLane',
+		'layout': {
+			'line-join': 'round',
+		},
+		'paint': PaintB
+	});	map.on('click', 'MockingbirdLaneLine', (e) => {		
+		const coordinates = e.features[0].geometry.coordinates.slice();
+		const description = e.features[0].properties.description;		
+		while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
+			coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
+		}
+		new mapboxgl.Popup()
+			.setLngLat([-96.797968, 44.286295])
+			.setHTML(description)
+			.addTo(map);
+	});	map.on('mouseenter', 'MockingbirdLaneLine', () => {
+		map.getCanvas().style.cursor = 'pointer';
+	});	map.on('mouseleave', 'MockingbirdLaneLine', () => {
+		map.getCanvas().style.cursor = '';
+	});	
+});
+</script>
+ 
+</body>
+</html>
