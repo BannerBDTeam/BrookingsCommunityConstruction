@@ -71,8 +71,8 @@ body { margin: 0; padding: 0; }
 		const map = new mapboxgl.Map({
 			container: 'map', // container ID
 			style: 'mapbox://styles/bannerbdteam/clcqee9fj000416pdx6c34njq', // style URL
-		center: [-96.801274, 44.289653], // starting position [lng, lat]
-		zoom: 14.8 // starting zoom
+		center: [-96.80866913509945, 44.28988127521075], // starting position [lng, lat]
+		zoom: 14.48 // starting zoom
 	});
 map.scrollZoom.disable();
 map.doubleClickZoom.disable();
@@ -94,73 +94,26 @@ var PaintB = {
 			'line-width': 3,
 			'line-opacity': 1
 			};
-map.on('load', () => {
-	map.addSource('RegencyCt', {
-		'type': 'geojson',
-		'data': {
-			'type': 'Feature',
-			'properties': {
-				'description':
-					'<h3>Regency Court</h3><div><b>Dates?</b></div>',
-			},
-			'geometry': {
-			'type': 'LineString',
-				'coordinates': [
-					[-96.809774, 44.297155],
-					[-96.809783, 44.296556],
-					[-96.81191, 44.29655],
-					[-96.811883, 44.29493],
-					[-96.809738, 44.294949],
-					[-96.809756, 44.295528],
-					[-96.80962, 44.295645],
-					[-96.809411, 44.295717],
-					[-96.80882, 44.295723]
-				]
-			}
-		}
-	});
-	map.addLayer({
-		'id': 'RegencyCtOutline',
-		'type': 'line',
-		'source': 'RegencyCt',
+var layerdeetsA = {
 		'layout': {
 			'line-join': 'round',
 		},
 		'paint': PaintA
-	});
-	map.addLayer({
-		'id': 'RegencyCtLine',
-		'type': 'line',
-		'source': 'RegencyCt',
+		};
+var layerdeetsB = {
 		'layout': {
 			'line-join': 'round',
 		},
-		'paint': PaintB 
-	});	
-	map.on('click', 'RegencyCtLine', (e) => {		
-		const coordinates = e.features[0].geometry.coordinates.slice();
-		const description = e.features[0].properties.description;		
-		while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
-			coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
-		}
-		new mapboxgl.Popup()
-			.setLngLat([-96.809756, 44.295528])
-			.setHTML(description)
-			.addTo(map);
-	});
-	map.on('mouseenter', 'RegencyCtLine', () => {
-		map.getCanvas().style.cursor = 'pointer';
-	});
-	map.on('mouseleave', 'RegencyCtLine', () => {
-		map.getCanvas().style.cursor = '';
-	});
+		'paint': PaintB
+		};
+map.on('load', () => {
 	map.addSource('BrokenBowTrail', {
 		'type': 'geojson',
 		'data': {
 			'type': 'Feature',
 			'properties': {
 				'description':
-					'<h3>Broken Bow Trail</h3><div><b>Dates?</b></div>',
+					'<h3>Broken Bow Trail</h3><div><b>Chip and Seal</b></div>',
 			},
 			'geometry': {
 			'type': 'LineString',
@@ -227,7 +180,7 @@ map.on('load', () => {
 			'type': 'Feature',
 			'properties': {
 				'description':
-					'<h3>Thunder Pass</h3><div><b>Dates?</b></div>',
+					'<h3>Thunder Pass</h3><div><b>Chip and Seal</b></div>',
 			},
 			'geometry': {
 			'type': 'LineString',
@@ -286,7 +239,7 @@ map.on('load', () => {
 			'type': 'Feature',
 			'properties': {
 				'description':
-					'<h3>Thunder Lane</h3><div><b>Dates?</b></div>',
+					'<h3>Thunder Lane</h3><div><b>Chip and Seal</b></div>',
 			},
 			'geometry': {
 			'type': 'LineString',
@@ -349,7 +302,7 @@ map.on('load', () => {
 			'type': 'Feature',
 			'properties': {
 				'description':
-					'<h3>Onaka Trail</h3><div><b>Dates?</b></div>',
+					'<h3>Onaka Trail</h3><div><b>Chip and Seal</b></div>',
 			},
 			'geometry': {
 			'type': 'LineString',
@@ -405,7 +358,7 @@ map.on('load', () => {
 			'type': 'Feature',
 			'properties': {
 				'description':
-					'<h3>Crystal Ridge Road</h3><div><b>Dates?</b></div>',
+					'<h3>Crystal Ridge Road</h3><div><b>Chip and Seal</b></div>',
 			},
 			'geometry': {
 			'type': 'LineString',
@@ -470,7 +423,7 @@ map.on('load', () => {
 			'type': 'Feature',
 			'properties': {
 				'description':
-					'<h3>Deer Lane</h3><div><b>Dates?</b></div>',
+					'<h3>Deer Lane</h3><div><b>Chip and Seal</b></div>',
 			},
 			'geometry': {
 			'type': 'LineString',
@@ -524,7 +477,7 @@ map.on('load', () => {
 			'type': 'Feature',
 			'properties': {
 				'description':
-					'<h3>Dakota Trail</h3><div><b>Dates?</b></div>',
+					'<h3>Dakota Trail</h3><div><b>Chip and Seal</b></div>',
 			},
 			'geometry': {
 			'type': 'LineString',
@@ -588,7 +541,7 @@ map.on('load', () => {
 			'type': 'Feature',
 			'properties': {
 				'description':
-					'<h3>Telluride Lane</h3><div><b>Dates?</b></div>',
+					'<h3>Telluride Lane</h3><div><b>Chip and Seal</b></div>',
 			},
 			'geometry': {
 			'type': 'LineString',
@@ -648,7 +601,7 @@ map.on('load', () => {
 			'type': 'Feature',
 			'properties': {
 				'description':
-					'<h3>Telluride Circle</h3><div><b>Dates?</b></div>',
+					'<h3>Telluride Circle</h3><div><b>Chip and Seal</b></div>',
 			},
 			'geometry': {
 			'type': 'LineString',
@@ -708,7 +661,7 @@ map.on('load', () => {
 			'type': 'Feature',
 			'properties': {
 				'description':
-					'<h3>Copper Mountain Road</h3><div><b>Dates?</b></div>',
+					'<h3>Copper Mountain Road</h3><div><b>Chip and Seal</b></div>',
 			},
 			'geometry': {
 			'type': 'LineString',
@@ -762,7 +715,7 @@ map.on('load', () => {
 			'type': 'Feature',
 			'properties': {
 				'description':
-					'<h3>Copper Mountain Circle</h3><div><b>Dates?</b></div>',
+					'<h3>Copper Mountain Circle</h3><div><b>Chip and Seal</b></div>',
 			},
 			'geometry': {
 			'type': 'LineString',
@@ -824,13 +777,31 @@ map.on('load', () => {
 			'type': 'Feature',
 			'properties': {
 				'description':
-					'<h3>Summit Pass</h3><div><b>Dates?</b></div>',
+					'<h3>Summit Pass</h3><div><b>Chip and Seal</b></div>',
 			},
 			'geometry': {
 			'type': 'LineString',
 				'coordinates': [
 					[-96.808701, 44.29131],
-					[-96.814451, 44.29133]
+					[-96.81304882142143, 44.29132541009538],
+					[-96.81445675095705, 44.29132655970001],
+					[-96.81519509439497, 44.29133907732142],
+					[-96.81597959578643, 44.291370474817626],
+					[-96.81817502793238, 44.291513509189336],
+					[-96.81872525875083, 44.29155978442114],
+					[-96.82007519506723, 44.291639561423835],
+					[-96.82064136233537, 44.29167001002769],
+					[-96.82104643484608, 44.29168523432657],
+					[-96.82151085329588, 44.29168157885769],
+					[-96.82206281002497, 44.29165840965082],
+					[-96.82280599256002, 44.29161164072184],
+					[-96.82347329635616, 44.29152457018036],
+					[-96.82414828916043, 44.29141548459004],
+					[-96.82510859517109, 44.29119376418963],
+					[-96.82665326575504, 44.29071886700228],
+					[-96.82699076215724, 44.290662259471425],
+					[-96.8274589716867, 44.29063867499168],
+					[-96.82886498232962, 44.290630047081194]
 				]
 			}
 		}
@@ -860,7 +831,7 @@ map.on('load', () => {
 			coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
 		}		
 		new mapboxgl.Popup()
-			.setLngLat([-96.811576, 44.291132])
+			.setLngLat([-96.82104643484608, 44.29168523432657])
 			.setHTML(description)
 			.addTo(map);
 	});	
@@ -876,7 +847,7 @@ map.on('load', () => {
 			'type': 'Feature',
 			'properties': {
 				'description':
-					'<h3>Powderhorn Pass</h3><div><b>Dates?</b></div>',
+					'<h3>Powderhorn Pass</h3><div><b>Chip and Seal</b></div>',
 			},
 			'geometry': {
 			'type': 'LineString',
@@ -938,7 +909,7 @@ map.on('load', () => {
 			'type': 'Feature',
 			'properties': {
 				'description':
-					'<h3>Indian Hills Road</h3><div><b>Dates?</b></div>',
+					'<h3>Indian Hills Road</h3><div><b>Chip and Seal</b></div>',
 			},
 			'geometry': {
 			'type': 'LineString',
@@ -1023,7 +994,7 @@ map.on('load', () => {
 			'type': 'Feature',
 			'properties': {
 				'description':
-					'<h3>Apache Trail</h3><div><b>Dates?</b></div>',
+					'<h3>Apache Trail</h3><div><b>Chip and Seal</b></div>',
 			},
 			'geometry': {
 			'type': 'LineString',
@@ -1082,7 +1053,7 @@ map.on('load', () => {
 			'type': 'Feature',
 			'properties': {
 				'description':
-					'<h3>Emerald Circle</h3><div><b>Dates?</b></div>',
+					'<h3>Emerald Circle</h3><div><b>Chip and Seal</b></div>',
 			},
 			'geometry': {
 			'type': 'LineString',
@@ -1144,7 +1115,7 @@ map.on('load', () => {
 			'type': 'Feature',
 			'properties': {
 				'description':
-					'<h3>Wahpeton Pass</h3><div><b>Dates?</b></div>',
+					'<h3>Wahpeton Pass</h3><div><b>Chip and Seal</b></div>',
 			},
 			'geometry': {
 			'type': 'LineString',
@@ -1208,7 +1179,7 @@ map.on('load', () => {
 			'type': 'Feature',
 			'properties': {
 				'description':
-					'<h3>Trail Ridge Road</h3><div><b>Dates?</b></div>',
+					'<h3>Trail Ridge Road</h3><div><b>Chip and Seal</b></div>',
 			},
 			'geometry': {
 			'type': 'LineString',
@@ -1284,7 +1255,7 @@ map.on('load', () => {
 					'type': 'Feature',
 					'properties': {
 						'description':
-							'<h3>Pine Ridge Road</h3><div><b>Dates?</b></div>',
+							'<h3>Pine Ridge Road</h3><div><b>Chip and Seal</b></div>',
 					},
 					'geometry': {
 					'type': 'LineString',
@@ -1314,7 +1285,7 @@ map.on('load', () => {
 					'type': 'Feature',
 					'properties': {
 						'description':
-							'<h3>Pine Ridge Road</h3><div><b>Dates?</b></div>',
+							'<h3>Pine Ridge Road</h3><div><b>Chip and Seal</b></div>',
 					},
 					'geometry': {
 					'type': 'LineString',
@@ -1374,7 +1345,7 @@ map.on('load', () => {
 			'type': 'Feature',
 			'properties': {
 				'description':
-					'<h3>Sundance Pass</h3><div><b>Dates?</b></div>',
+					'<h3>Sundance Pass</h3><div><b>Chip and Seal</b></div>',
 			},
 			'geometry': {
 			'type': 'LineString',
@@ -1439,7 +1410,7 @@ map.on('load', () => {
 					'type': 'Feature',
 					'properties': {
 						'description':
-							'<h3>Overlook Ridge Road</h3><div><b>Dates?</b></div>',
+							'<h3>Overlook Ridge Road</h3><div><b>Chip and Seal</b></div>',
 					},
 					'geometry': {
 					'type': 'LineString',
@@ -1471,7 +1442,7 @@ map.on('load', () => {
 					'type': 'Feature',
 					'properties': {
 						'description':
-							'<h3>Overlook Ridge Road</h3><div><b>Dates?</b></div>',
+							'<h3>Overlook Ridge Road</h3><div><b>Chip and Seal</b></div>',
 					},
 					'geometry': {
 					'type': 'LineString',
@@ -1530,7 +1501,7 @@ map.on('load', () => {
 			'type': 'Feature',
 			'properties': {
 				'description':
-					'<h3>Gray Owl Pass</h3><div><b>Dates?</b></div>',
+					'<h3>Gray Owl Pass</h3><div><b>Chip and Seal</b></div>',
 			},
 			'geometry': {
 			'type': 'LineString',
@@ -1596,7 +1567,7 @@ map.on('load', () => {
 			'type': 'Feature',
 			'properties': {
 				'description':
-					'<h3>Flint Pass</h3><div><b>Dates?</b></div>',
+					'<h3>Flint Pass</h3><div><b>Chip and Seal</b></div>',
 			},
 			'geometry': {
 			'type': 'LineString',
@@ -1656,7 +1627,7 @@ map.on('load', () => {
 			'type': 'Feature',
 			'properties': {
 				'description':
-					'<h3>Tatanka Pass</h3><div><b>Dates?</b></div>',
+					'<h3>Tatanka Pass</h3><div><b>Chip and Seal</b></div>',
 			},
 			'geometry': {
 			'type': 'LineString',
@@ -1716,7 +1687,7 @@ map.on('load', () => {
 			'type': 'Feature',
 			'properties': {
 				'description':
-					'<h3>Teton Pass</h3><div><b>Dates?</b></div>',
+					'<h3>Teton Pass</h3><div><b>Chip and Seal</b></div>',
 			},
 			'geometry': {
 			'type': 'LineString',
@@ -1784,7 +1755,7 @@ map.on('load', () => {
 			'type': 'Feature',
 			'properties': {
 				'description':
-					'<h3>Half Moon Road</h3><div><b>Dates?</b></div>',
+					'<h3>Half Moon Road</h3><div><b>Chip and Seal</b></div>',
 			},
 			'geometry': {
 			'type': 'LineString',
@@ -1852,7 +1823,7 @@ map.on('load', () => {
 			'type': 'Feature',
 			'properties': {
 				'description':
-					'<h3>Mustang Pass</h3><div><b>Dates?</b></div>',
+					'<h3>Mustang Pass</h3><div><b>Chip and Seal</b></div>',
 			},
 			'geometry': {
 			'type': 'LineString',
@@ -1908,7 +1879,7 @@ map.on('load', () => {
 			'type': 'Feature',
 			'properties': {
 				'description':
-					'<h3>Sioux Trail</h3><div><b>Dates?</b></div>',
+					'<h3>Sioux Trail</h3><div><b>Chip and Seal</b></div>',
 			},
 			'geometry': {
 			'type': 'LineString',
@@ -1957,7 +1928,7 @@ map.on('load', () => {
 			'type': 'Feature',
 			'properties': {
 				'description':
-					'<h3>Sioux Pass</h3><div><b>Dates?</b></div>',
+					'<h3>Sioux Pass</h3><div><b>Chip and Seal</b></div>',
 			},
 			'geometry': {
 			'type': 'LineString',
@@ -2006,7 +1977,7 @@ map.on('load', () => {
 			'type': 'Feature',
 			'properties': {
 				'description':
-					'<h3>Buffalo Trail</h3><div><b>Dates?</b></div>',
+					'<h3>Buffalo Trail</h3><div><b>Chip and Seal</b></div>',
 			},
 			'geometry': {
 			'type': 'LineString',
@@ -2068,7 +2039,7 @@ map.on('load', () => {
 			'type': 'Feature',
 			'properties': {
 				'description':
-					'<h3Council Ridge Road</h3><div><b>Dates?</b></div>',
+					'<h3Council Ridge Road</h3><div><b>Chip and Seal</b></div>',
 			},
 			'geometry': {
 			'type': 'LineString',
@@ -2125,7 +2096,7 @@ map.on('load', () => {
 			'type': 'Feature',
 			'properties': {
 				'description':
-					'<h3>Santee Trail</h3><div><b>Dates?</b></div>',
+					'<h3>Santee Trail</h3><div><b>Chip and Seal</b></div>',
 			},
 			'geometry': {
 			'type': 'LineString',
@@ -2199,7 +2170,7 @@ map.on('load', () => {
 					'type': 'Feature',
 					'properties': {
 						'description':
-							'<h3>Santee Pass</h3><div><b>Dates?</b></div>',
+							'<h3>Santee Pass</h3><div><b>Chip and Seal</b></div>',
 					},
 					'geometry': {
 					'type': 'LineString',
@@ -2238,7 +2209,7 @@ map.on('load', () => {
 					'type': 'Feature',
 					'properties': {
 						'description':
-							'<h3>Santee Pass</h3><div><b>Dates?</b></div>',
+							'<h3>Santee Pass</h3><div><b>Chip and Seal</b></div>',
 					},
 					'geometry': {
 					'type': 'LineString',
@@ -2296,7 +2267,7 @@ map.on('load', () => {
 			'type': 'Feature',
 			'properties': {
 				'description':
-					'<h3>Eberlein Drive</h3><div><b>Dates?</b></div>',
+					'<h3>Eberlein Drive</h3><div><b>Chip and Seal</b></div>',
 			},
 			'geometry': {
 			'type': 'LineString',
@@ -2357,7 +2328,7 @@ map.on('load', () => {
 			'type': 'Feature',
 			'properties': {
 				'description':
-					'<h3>Finch Circle</h3><div><b>Dates?</b></div>',
+					'<h3>Finch Circle</h3><div><b>Chip and Seal</b></div>',
 			},
 			'geometry': {
 			'type': 'LineString',
@@ -2417,7 +2388,7 @@ map.on('load', () => {
 			'type': 'Feature',
 			'properties': {
 				'description':
-					'<h3>Wren Circle</h3><div><b>Dates?</b></div>',
+					'<h3>Wren Circle</h3><div><b>Chip and Seal</b></div>',
 			},
 			'geometry': {
 			'type': 'LineString',
@@ -2483,7 +2454,7 @@ map.on('load', () => {
 					'type': 'Feature',
 					'properties': {
 						'description':
-							'<h3>Oriole Trail</h3><div><b>Dates?</b></div>',
+							'<h3>Oriole Trail</h3><div><b>Chip and Seal</b></div>',
 					},
 					'geometry': {
 					'type': 'LineString',
@@ -2503,7 +2474,7 @@ map.on('load', () => {
 					'type': 'Feature',
 					'properties': {
 						'description':
-							'<h3>Oriole Trail</h3><div><b>Dates?</b></div>',
+							'<h3>Oriole Trail</h3><div><b>Chip and Seal</b></div>',
 					},
 					'geometry': {
 					'type': 'LineString',
@@ -2561,7 +2532,7 @@ map.on('load', () => {
 			'type': 'Feature',
 			'properties': {
 				'description':
-					'<h3>19th St S</h3><div><b>Dates?</b></div>',
+					'<h3>19th St S</h3><div><b>Chip and Seal</b></div>',
 			},
 			'geometry': {
 			'type': 'LineString',
@@ -2614,7 +2585,7 @@ map.on('load', () => {
 			'type': 'Feature',
 			'properties': {
 				'description':
-					'<h3>Range Circle</h3><div><b>Dates?</b></div>',
+					'<h3>Range Circle</h3><div><b>Chip and Seal</b></div>',
 			},
 			'geometry': {
 			'type': 'LineString',
@@ -2678,7 +2649,7 @@ map.on('load', () => {
 			'type': 'Feature',
 			'properties': {
 				'description':
-					'<h3>Hunters Ridge Road</h3><div><b>Dates?</b></div>',
+					'<h3>Hunters Ridge Road</h3><div><b>Chip and Seal</b></div>',
 			},
 			'geometry': {
 			'type': 'LineString',
@@ -2732,7 +2703,7 @@ map.on('load', () => {
 			'type': 'Feature',
 			'properties': {
 				'description':
-					'<h3>9th Ave S</h3><div><b>Dates?</b></div>',
+					'<h3>9th Ave S</h3><div><b>Chip and Seal</b></div>',
 			},
 			'geometry': {
 			'type': 'LineString',
@@ -2785,7 +2756,7 @@ map.on('load', () => {
 			'type': 'Feature',
 			'properties': {
 				'description':
-					'<h3>17th St S</h3><div><b>Dates?</b></div>',
+					'<h3>17th St S</h3><div><b>Chip and Seal</b></div>',
 			},
 			'geometry': {
 			'type': 'LineString',
@@ -2836,7 +2807,7 @@ map.on('load', () => {
 			'type': 'Feature',
 			'properties': {
 				'description':
-					'<h3>Leprechaun Circle</h3><div><b>Dates?</b></div>',
+					'<h3>Leprechaun Circle</h3><div><b>Chip and Seal</b></div>',
 			},
 			'geometry': {
 			'type': 'LineString',
@@ -2895,7 +2866,7 @@ map.on('load', () => {
 			'type': 'Feature',
 			'properties': {
 				'description':
-					'<h3>Pheasant Run Road</h3><div><b>Dates?</b></div>',
+					'<h3>Pheasant Run Road</h3><div><b>Chip and Seal</b></div>',
 			},
 			'geometry': {
 			'type': 'LineString',
@@ -2976,7 +2947,7 @@ map.on('load', () => {
 			'type': 'Feature',
 			'properties': {
 				'description':
-					'<h3>Pheasant Run Circle</h3><div><b>Dates?</b></div>',
+					'<h3>Pheasant Run Circle</h3><div><b>Chip and Seal</b></div>',
 			},
 			'geometry': {
 			'type': 'LineString',
@@ -3037,7 +3008,7 @@ map.on('load', () => {
 			'type': 'Feature',
 			'properties': {
 				'description':
-					'<h3>Arrowhead Pass</h3><div><b>Dates?</b></div>',
+					'<h3>Arrowhead Pass</h3><div><b>Chip and Seal</b></div>',
 			},
 			'geometry': {
 			'type': 'LineString',
@@ -3096,7 +3067,7 @@ map.on('load', () => {
 			'type': 'Feature',
 			'properties': {
 				'description':
-					'<h3>Candlewood Lane</h3><div><b>Dates?</b></div>',
+					'<h3>Candlewood Lane</h3><div><b>Chip and Seal</b></div>',
 			},
 			'geometry': {
 			'type': 'LineString',
@@ -3159,7 +3130,7 @@ map.on('load', () => {
 			'type': 'Feature',
 			'properties': {
 				'description':
-					'<h3>Pamela Drive</h3><div><b>Dates?</b></div>',
+					'<h3>Pamela Drive</h3><div><b>Chip and Seal</b></div>',
 			},
 			'geometry': {
 			'type': 'LineString',
@@ -3217,7 +3188,7 @@ map.on('load', () => {
 			'type': 'Feature',
 			'properties': {
 				'description':
-					'<h3>Mockingbird Lane</h3><div><b>Dates?</b></div>',
+					'<h3>Mockingbird Lane</h3><div><b>Chip and Seal</b></div>',
 			},
 			'geometry': {
 			'type': 'LineString',
