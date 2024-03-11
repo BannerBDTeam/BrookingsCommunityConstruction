@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Brookings Community Construction Projects 2024</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<script src="https://api.tiles.mapbox.com/mapbox-gl-js/v2.14.1/mapbox-gl.js"></script>
+<link
+href="https://api.tiles.mapbox.com/mapbox-gl-js/v2.14.1/mapbox-gl.css"
+rel="stylesheet"
+/>
+<style>
+	#fit {
+		display: block;
+		position: absolute;
+		top: 0;
+		right: 0;
+		margin-top: 1%;
+		margin-right: 1%;
+		width: auto;
+		height: auto;
+		padding: 10px;
+		border: none;
+		border-radius: 3px;
+		font-size: 12px;
+		text-align: center;
+		color: #fa582a;
+		background: #242424;
+		cursor: pointer;
+	}
+	body {
+		color: #404040;
+		font: 400 15px/22px 'Source Sans Pro', 'Helvetica Neue', sans-serif;
+		margin: 0;
+		padding: 0;
+		-webkit-font-smoothing: antialiased;
+	}
+
+	* {
+		box-sizing: border-box;
+	}
+
+	.sidebar {
+		position: absolute;
+		width: 30%;
+		height: 100%;
+		top: 0;
+		left: 0;
+		overflow: hidden;
+		border-right: 1px solid rgba(0, 0, 0, 0.25);
+	}
+	
+
+	.map {
+		position: absolute;
+		left: 30%;
+		width: 70%;
+		top: 0;
+		bottom: 0;
+	}
+
+	h1 {
+		font-size: 22px;
+		margin: 0;
+		font-weight: 400;
+		line-height: 20px;
+		padding: 20px 2px;
+	}
+
+	a {
+		color: #0061bf;
+		text-decoration: none;
+	}
+
+	a:hover {
+		color: #3b103b;
+	}
+
+	.heading {
+		background: #fff;
+		border-bottom: 1px solid #eee;
+		min-height: 60px;
+		line-height: 60px;
+		padding: 0 10px;
+		background-color: #fa582a;
+		color: #fff;
+	}
+
+	.listings {
+		height: 90%;
+		overflow: auto;
+		padding-bottom: 60px;
+	}
+
+	.listings .item {
+		display: block;
+		border-bottom: 1px solid #eee;
+		padding: 10px;
+		text-decoration: none;
+	}
+
+	.listings .item:last-child {
+		border-bottom: none;
+	}
+	.listings .item .title {
+		display: block;
+		color: #fa582a;
+		font-weight: 700;
+	}
+
+	.listings .item .title small {
+		font-weight: 400;
+	}
+	.listings .item.active .title,
+	.listings .item .title:hover {
+		color: #3b103b;
+	}
+	.listings .item.active {
+		background-color: #f8f8f8;
+	}
+	::-webkit-scrollbar {
+		width: 3px;
+		height: 3px;
+		border-left: 0;
+		background: rgba(0, 0, 0, 0.1);
+	}
+	::-webkit-scrollbar-track {
+		background: none;
+	}
+	::-webkit-scrollbar-thumb {
+		background: #fa582a;
+		border-radius: 0;
+	}
+
+	.marker {
+		border: none;
+		cursor: pointer;
+		height: 75px;
+		width: 75px;
+	}
+
+	/* Marker tweaks */
+	.mapboxgl-popup {
+		padding-bottom: 50px;
+	}
+
+	.mapboxgl-popup-close-button {
+		display: true;
+		color: #ffffff;
+		width: 3em;
+		height: 3em;
+	}
+	.mapboxgl-popup-content {
+		font: 400 15px/22px 'Source Sans Pro', 'Helvetica Neue', sans-serif;
+		padding: 0;
+		width: 180px;
+	}
+	.mapboxgl-popup-content h3 {
+		background: #fa582a;
+		color: #fff;
+		margin: 0;
+		padding: 10px;
+		border-radius: 3px 3px 0 0;
+		font-weight: 550;
+		margin-top: -15px;
+	}
+
+	.mapboxgl-popup-content h4 {
+		margin: 0;
+		padding: 10px;
+		font-weight: 400;
+	}
+
+	.mapboxgl-popup-content div {
+		padding: 10px;
+	}
+
+	.mapboxgl-popup-anchor-top > .mapboxgl-popup-content {
+		margin-top: 15px;
+	}
+
+	.mapboxgl-popup-anchor-top > .mapboxgl-popup-tip {
+		border-bottom-color: #91c949;
+	}
+	#menu {
+		background: #fff;
+		position: absolute;
+		z-index: 1;
+		top: 10px;
+		right: 10px;
+		border-radius: 3px;
+		width: 120px;
+		border: 1px solid rgba(0, 0, 0, 0.4);
+		font-family: 'Open Sans', sans-serif;
+	}
+		 
+	#menu a {
+		font-size: 13px;
+		color: #404040;
+		display: block;
+		margin: 0;
+		padding: 0;
+		padding: 10px;
+		text-decoration: none;
+		border-bottom: 1px solid rgba(0, 0, 0, 0.25);
+		text-align: center;
+	}
+		 
+	#menu a:last-child {
+		border: none;
+	}
+		 
+	#menu a:hover {
+		background-color: #f8f8f8;
+		color: #404040;
+	}
+		 
+	#menu a.active {
+		background-color: #3887be;
+		color: #ffffff;
+	}
+		 
+	#menu a.active:hover {
+		background: #3074a4;
+	}
+	
+		#legend {
+		padding: 10px;
+		box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+		line-height: 30px;
+		height: 100x;
+		margin-bottom: 40px;
+		width: 225px;
+		}
+	.legend-key {
+		display: inline-block;
+		border-radius: 20%;
+		width: 1em;
+		height: 1em;
+		margin-right: 5px;
+		}
+	.map-overlay {
+		position: absolute;
+		bottom: 0;
+		right: 0;
+		background: #fff;
+		border: 0.25em solid #eee;
+		margin-right: 1%;
+		font-family: Arial, sans-serif;
+		overflow: auto;
+		border-radius: 0.3em;
+		}
+</style>
+</head>
+<body>
+<div class="sidebar">
+<div class="heading">
+<h1>Current Projects</h1>
+</div>
+<div id="listings" class="listings"></div>
+</div>
+<div id="map" class="map"></div>
+<button id="fit">Zoom Out</button>
+<script>
+mapboxgl.accessToken = 'pk.eyJ1IjoiYmFubmVyYmR0ZWFtIiwiYSI6ImNsbHh1N21jbTE2engzcnAzNmFsNnNkamgifQ.k_o9SiWhtHBqTPptdVv1ag';
+	
+	/**
+	 * Add the map to the page
+	 */
+	const map = new mapboxgl.Map({
+		container: 'map',
+		style: 'mapbox://styles/bannerbdteam/clthkv9fd00z201qu59uf8s97',
+		center: [-96.7776245, 44.2906315],
+		zoom: 7.8,
+		scrollZoom: false
+	});
+	map.fitBounds([
+		[-96.84437, 44.242475],
+		[-96.710879, 44.338788]
+	]);
+	const projects = {
+		'type': 'FeatureCollection',
+			'features': [
+				{
+				'type': 'Feature',
+					'geometry': {
+						'type': 'Point',
+						'coordinates': [-96.788139, 44.282481]
+					},
+					'properties': {
+						'name': '20th St S',
+						'description': 'Asphalt mill and overlay from Windermere Way to Main Ave S, curb ramp upgrades at multiple intersections, and miscellaneous completion tasks like pavement markings, seeding, sprinkler repair, and cleanup. Refer to the <a href="https://brookingscommunityconstruction.info/bmu-rt-wtr-ph2-20th" target="_blank" rel="noopener noreferrer">project page</a> for more details.',
+						'status': 'Not Started',
+						'lastUpdate': 'Updated March 11, 2024'
+					}
+				},
+				{
+				'type': 'Feature',
+					'geometry': {
+						'type': 'Point',
+						'coordinates': [-96.808463, 44.260111]
+					},
+					'properties': {
+						'name': 'Western Ave S Sanitary Sewer Interceptor Replacement',
+						'description': 'This project includes watermain installation from W 44th St S to Hawaii Dr, and removal / replacement of the sanitary sewer interceptor. Refer to the <a href="https://brookingscommunityconstruction.info/bmu-ss-ph2-44th" target="_blank" rel="noopener noreferrer">project page</a> for more details.',
+						'status': 'Not Started',
+						'lastUpdate': 'Updated March 11, 2024'
+					}
+				},
+				{
+				'type': 'Feature',
+					'geometry': {
+						'type': 'Point',
+						'coordinates': [-96.769888, 44.318576]
+					},
+					'properties': {
+						'name': 'University Blvd / 22nd Ave Road Reconstruction and Sanitary Sewer Upgrades',
+						'description': 'After removing surfacing and installing a new sanitary sewer, these road segments will be reconstructed. Refer to the <a href="https://brookingscommunityconstruction.info/brkgs-university-blvd" target="_blank" rel="noopener noreferrer">project page</a> for more details.',
+						'status': 'Not Started',
+						'lastUpdate': 'Updated March 11, 2024'
+					}
+				},
+				{
+				'type': 'Feature',
+					'geometry': {
+						'type': 'Point',
+						'coordinates': [-96.748758, 44.317792]
+					},
+					'properties': {
+						'name': '34th Ave Reconstruction and Watermain Installation',
+						'description': '34th Ave will be closed in segments to install new watermain and reconstruct the road. Refer to the <a href="https://brookingscommunityconstruction.info/bmu-rt-wtr-ph2-34th" target="_blank" rel="noopener noreferrer">project page</a> for more details.',
+						'status': 'Not Started',
+						'lastUpdate': 'Updated March 11, 2024'
+					}
+				},
+				{
+				'type': 'Feature',
+					'geometry': {
+						'type': 'Point',
+						'coordinates': [-96.788448, 44.31678]
+					},
+					'properties': {
+						'name': 'SDSU West Watermain Upgrade',
+						'description': 'Upgraded watermain will provide more reliable service to campus facilities. Harvey Dunn St and Medary Ave will be closed during installation. Refer to the <a href="https://brookingscommunityconstruction.info/bmu-rt-wtr-ph2-34th" target="_blank" rel="noopener noreferrer">project page</a> for more details.',
+						'status': 'Not Started',
+						'lastUpdate': 'Updated March 11, 2024'
+					}
+				},
+				{
+				'type': 'Feature',
+					'geometry': {
+						'type': 'Point',
+						'coordinates': [-96.785433, 44.311477]
+					},
+					'properties': {
+						'name': 'Lead Water Service Replacement',
+						'description': 'Replacement of nearly 50 existing Lead Water service lines throughout Brookings. This project area is for the first 17 planned sites. Refer to the <a href="https://brookingscommunityconstruction.info" target="_blank" rel="noopener noreferrer">project page</a> for more details.',
+						'status': 'Not Started',
+						'lastUpdate': 'Updated March 11, 2024'
+					}
+				}
+		]
+	};
+			
+	/**
+	 * Assign a unique id to each project. You'll use this `id`
+	 * later to associate each point on the map with a listing
+	 * in the sidebar.
+	 */
+	projects.features.forEach((project, i) => {
+		project.properties.id = i;
+	});
+
+	/**
+	 * Wait until the map loads to make changes to the map.
+	 */
+	map.on('load', () => {
+		/**
+		 * This is where your '.addLayer()' used to be, instead
+		 * add only the source without styling a layer
+		 */
+		map.addSource('places', {
+		'type': 'geojson',
+		'data': projects
+		});
+
+		/**
+		 * Add all the things to the page:
+		 * - The location listings on the side of the page
+		 * - The markers onto the map
+		 */
+		buildLocationList(projects);
+		addMarkers();
+	});
+		
+
+	/**
+	 * Add a marker to the map for every project listing.
+	 **/
+	function addMarkers() {
+		/* For each feature in the GeoJSON object above: */
+		for (const marker of projects.features) {
+		/* Create a div element for the marker. */
+		const el = document.createElement('div');
+		/* Assign a unique `id` to the marker. */
+		el.id = `marker-${marker.properties.id}`;
+		/* Assign the `marker` class to each marker for styling. */
+		el.className = 'marker';
+
+		/**
+		 * Create a marker using the div element
+		 * defined above and add it to the map.
+		 **/
+		new mapboxgl.Marker(el, { offset: [0, 0] })
+		.setLngLat(marker.geometry.coordinates)
+		.addTo(map);
+
+		/**
+		 * Listen to the element and when it is clicked, do three things:
+		 * 1. Fly to the point
+		 * 2. Close all other popups and display popup for clicked project
+		 * 3. Highlight listing in sidebar (and remove highlight for all other listings)
+		 **/
+		el.addEventListener('click', (e) => {
+		/* Fly to the point */
+		flyToProject(marker);
+		/* Close all other popups and display popup for clicked project */
+		createPopUp(marker);
+		/* Highlight listing in sidebar */
+		const activeItem = document.getElementsByClassName('active');
+		e.stopPropagation();
+		if (activeItem[0]) {
+			activeItem[0].classList.remove('active');
+		}
+		const listing = document.getElementById(
+			`listing-${marker.properties.id}`
+		);
+		listing.classList.add('active');
+		});
+		}
+	}
+
+	/**
+	 * Add a listing for each project to the sidebar.
+	 **/
+	function buildLocationList(projects) {
+		for (const project of projects.features) {
+		/* Add a new listing section to the sidebar. */
+		const listings = document.getElementById('listings');
+		const listing = listings.appendChild(document.createElement('div'));
+				/* Assign a unique `id` to the listing. */
+				listing.id = `listing-${project.properties.id}`;
+				/* Assign the `item` class to each listing for styling. */
+				listing.className = 'item';
+
+		/* Add the link to the individual listing created above. */
+		const link = listing.appendChild(document.createElement('a'));
+				link.href = '#';
+				link.className = 'title';
+				link.id = `link-${project.properties.id}`;
+				link.innerHTML = `${project.properties.name}`;
+
+		/* Add details to the individual listing. */
+		const details = listing.appendChild(document.createElement('div'));
+				details.innerHTML = `${project.properties.status}`;
+				if (project.properties.lastUpdate) {
+				details.innerHTML += ` &middot; ${project.properties.lastUpdate}`;
+				}
+
+		/**
+		 * Listen to the element and when it is clicked, do four things:
+		 * 1. Update the `currentFeature` to the project associated with the clicked link
+		 * 2. Fly to the point
+		 * 3. Close all other popups and display popup for clicked project
+		 * 4. Highlight listing in sidebar (and remove highlight for all other listings)
+		 **/
+		link.addEventListener('click', function () {
+		for (const feature of projects.features) {
+			if (this.id === `link-${feature.properties.id}`) {
+			flyToProject(feature);
+			createPopUp(feature);
+			}
+		}
+		const activeItem = document.getElementsByClassName('active');
+		if (activeItem[0]) {
+			activeItem[0].classList.remove('active');
+		}
+		this.parentNode.classList.add('active');
+		});
+		}
+	}
+
+	/**
+	 * Use Mapbox GL JS's `flyTo` to move the camera smoothly
+	 * a given center point.
+	 **/
+	function flyToProject(currentFeature) {
+		map.flyTo({
+		center: currentFeature.geometry.coordinates,
+		zoom: 14
+		});
+	}
+
+	/**
+	 * Create a Mapbox GL JS `Popup`.
+	 **/
+	function createPopUp(currentFeature) {
+		const popUps = document.getElementsByClassName('mapboxgl-popup');
+		if (popUps[0]) popUps[0].remove();
+		const popup = new mapboxgl.Popup({ closeOnClick: true })
+		.setLngLat(currentFeature.geometry.coordinates)
+		.setHTML(`<h3>${currentFeature.properties.name}</h3><h4>${currentFeature.properties.description}</h4>`)
+		.addTo(map);
+	}
+		document.getElementById('fit').addEventListener('click', () => {
+		map.fitBounds([
+			[-96.84437, 44.242475], // southwestern corner of the bounds
+			[-96.710879, 44.338788] // northeastern corner of the bounds
+		]);
+	for (var popup of document.getElementsByClassName("mapboxgl-popup")) {
+		popup.remove();
+		}		
+		});
+</script>
+</body>
+</html>
