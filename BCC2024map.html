@@ -70,7 +70,7 @@ html, body, #map{
 
 	.sidebar .closebtn {
 		position: absolute;
-		top: 0;
+		top: 0.5em;
 		right: 1em;
 		font-size: 2em;
 		margin-left: 3em;
@@ -84,8 +84,10 @@ html, body, #map{
 		padding: 10px 15px;
 		border: none;    
 		position:absolute; 
-		top:10px; 
-		left:10px; 
+		top: 0;
+		left: 0;
+		margin-top: 1%;
+		margin-left: 1%;
 		z-index:1;
 		border-radius: 3px;
 	}
@@ -188,14 +190,17 @@ html, body, #map{
 
 	/* Marker tweaks */
 	.mapboxgl-popup {
-		padding-bottom: 50px;
+		padding-bottom: 0.2em;
 	}
 
 	.mapboxgl-popup-close-button {
 		display: true;
-		color: #ffffff;
-		width: 3em;
-		height: 3em;
+		top: -0.4em;
+		right: 0.2em;
+		font-size: 2em;
+		color: #000000;
+		width: 1em;
+		height: 1em;
 	}
 	.mapboxgl-popup-content {
 		font: 400 15px/22px 'Source Sans Pro', 'Helvetica Neue', sans-serif;
@@ -255,7 +260,7 @@ html, body, #map{
 
 <button id="fit">Zoom Out</button>
 <script>
-mapboxgl.accessToken = 'pk.eyJ1IjoiYmFubmVyYmR0ZWFtIiwiYSI6ImNsbHh1N21jbTE2engzcnAzNmFsNnNkamgifQ.k_o9SiWhtHBqTPptdVv1ag';
+mapboxgl.accessToken = 'pk.eyJ1IjoiYmFubmVyYmR0ZWFtIiwiYSI6ImNsMnFqNjN6cjAxNTUzanBheHhrcHhiZTIifQ.ch8M3-K2DTiAL1dxtEmw5Q';
 	
 	/**
 	 * Add the map to the page
@@ -265,7 +270,8 @@ mapboxgl.accessToken = 'pk.eyJ1IjoiYmFubmVyYmR0ZWFtIiwiYSI6ImNsbHh1N21jbTE2engzc
 		style: 'mapbox://styles/bannerbdteam/clthkv9fd00z201qu59uf8s97',
 		center: [-96.7776245, 44.2906315],
 		zoom: 7.8,
-		scrollZoom: true
+		scrollZoom: false,
+		doubleClickZoom: false
 	});
 	map.fitBounds([
 		[-96.84437, 44.242475],
@@ -343,7 +349,59 @@ mapboxgl.accessToken = 'pk.eyJ1IjoiYmFubmVyYmR0ZWFtIiwiYSI6ImNsbHh1N21jbTE2engzc
 				'type': 'Feature',
 					'geometry': {
 						'type': 'Point',
-						'coordinates': [-96.785433, 44.311477]
+						'coordinates': [-96.74519, 44.320053]
+					},
+					'properties': {
+						'name': 'Water Treatment Plant',
+						'description': 'A new water treatment plant is planned for construction. New watermains are being installed along 20th St S and 34th Ave.',
+						'status': 'Not Started',
+						'lastUpdate': 'Updated March 11, 2024'
+					}
+				},
+				{
+				'type': 'Feature',
+					'geometry': {
+						'type': 'Point',
+						'coordinates': [-96.808631, 44.323479]
+					},
+					'properties': {
+						'name': 'Western Ave Culvert Replacement',
+						'description': 'The aging culvert will be replaced. Refer to the <a href="https://brookingscommunityconstruction.info/" target="_blank" rel="noopener noreferrer">project page</a> for more details.',
+						'status': 'Not Started',
+						'lastUpdate': 'Updated March 11, 2024'
+					}
+				},
+				{
+				'type': 'Feature',
+					'geometry': {
+						'type': 'Point',
+						'coordinates': [-96.803676, 44.29443]
+					},
+					'properties': {
+						'name': 'Concrete and Asphalt Repairs and Replacement',
+						'description': 'Multiple street segments (<font color="#2accfa">blue</font> lines) will be resurfaced, and multiple sidewalks (<font color="#2accfa">blue</font> dots) will be replaced with ADA-compliant designs for increased accessibility. Refer to the <a href="https://brookingscommunityconstruction.info/" target="_blank" rel="noopener noreferrer">project page</a> for more details.',
+						'status': 'Not Started',
+						'lastUpdate': 'Updated March 11, 2024'
+					}
+				},
+				{
+				'type': 'Feature',
+					'geometry': {
+						'type': 'Point',
+						'coordinates': [-96.793663, 44.310270]
+					},
+					'properties': {
+						'name': 'Chip and Slurry',
+						'description': 'Multiple street segments (<font color="#c02afa">purple</font> lines) throughout Brookings will be resurfaced. Refer to the <a href="https://brookingscommunityconstruction.info/" target="_blank" rel="noopener noreferrer">project page</a> for more details.',
+						'status': 'Not Started',
+						'lastUpdate': 'Updated March 11, 2024'
+					}
+				},
+				{
+				'type': 'Feature',
+					'geometry': {
+						'type': 'Point',
+						'coordinates': [-96.781117, 44.314144]
 					},
 					'properties': {
 						'name': 'Lead Water Service Replacement',
