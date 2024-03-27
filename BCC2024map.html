@@ -24,9 +24,12 @@ rel="stylesheet"
 		border-radius: 3px;
 		font-size: 1em;
 		text-align: center;
-		color: #fa582a;
+		color: #ffffff;
 		background: #242424;
 		cursor: pointer;
+	}
+	#fit:hover {
+		background-color: #444;
 	}
 	body { margin:0; padding:0; }
         #map { 
@@ -80,7 +83,7 @@ html, body, #map{
 		font-size: 1em;
 		cursor: pointer;
 		background-color: #242424;
-		color: #fa582a;
+		color: #ffffff;
 		padding: 10px 15px;
 		border: none;    
 		position:absolute; 
@@ -153,11 +156,13 @@ html, body, #map{
 		display: block;
 		color: #fa582a;
 		font-weight: 700;
-		font-size: 1.2em;
+		font-size: 1em;
 	}
-
 	.listings .item .title small {
 		font-weight: 400;
+		font-size: 0.75em;
+	}
+	.listings .item .innerText {
 		font-size: 0.8em;
 	}
 	.listings .item.active .title,
@@ -288,7 +293,7 @@ mapboxgl.accessToken = 'pk.eyJ1IjoiYmFubmVyYmR0ZWFtIiwiYSI6ImNsMnFqNjN6cjAxNTUza
 					},
 					'properties': {
 						'name': '20th St S',
-						'description': 'Asphalt mill and overlay from Windermere Way to Main Ave S, curb ramp upgrades at multiple intersections, and miscellaneous completion tasks like pavement markings, seeding, sprinkler repair, and cleanup. Refer to the <a href="https://brookingscommunityconstruction.info/bmu-rt-wtr-ph2-20th" target="_blank" rel="noopener noreferrer">project page</a> for more details.',
+						'description': 'Asphalt mill and overlay from Windermere Way to Main Ave S, curb ramp upgrades at multiple intersections, and miscellaneous completion tasks like pavement markings, seeding, sprinkler repair, and cleanup. Refer to the <a href="https://brookingscommunityconstruction.info/2024-20th-st-s" target="_blank" rel="noopener noreferrer">project page</a> for more details.',
 						'status': 'Not Started',
 						'lastUpdate': 'Updated March 11, 2024'
 					}
@@ -301,7 +306,7 @@ mapboxgl.accessToken = 'pk.eyJ1IjoiYmFubmVyYmR0ZWFtIiwiYSI6ImNsMnFqNjN6cjAxNTUza
 					},
 					'properties': {
 						'name': 'Western Ave S Sanitary Sewer Interceptor Replacement',
-						'description': 'This project includes watermain installation from W 44th St S to Hawaii Dr, and removal / replacement of the sanitary sewer interceptor. Refer to the <a href="https://brookingscommunityconstruction.info/bmu-ss-ph2-44th" target="_blank" rel="noopener noreferrer">project page</a> for more details.',
+						'description': 'This project includes watermain installation from W 44th St S to Hawaii Dr, and removal / replacement of the sanitary sewer interceptor. Refer to the <a href="https://brookingscommunityconstruction.info/2024-western-ave-s-sewer" target="_blank" rel="noopener noreferrer">project page</a> for more details.',
 						'status': 'Not Started',
 						'lastUpdate': 'Updated March 11, 2024'
 					}
@@ -314,7 +319,7 @@ mapboxgl.accessToken = 'pk.eyJ1IjoiYmFubmVyYmR0ZWFtIiwiYSI6ImNsMnFqNjN6cjAxNTUza
 					},
 					'properties': {
 						'name': 'University Blvd / 22nd Ave Road Reconstruction and Sanitary Sewer Upgrades',
-						'description': 'After removing surfacing and installing a new sanitary sewer, these road segments will be reconstructed. Refer to the <a href="https://brookingscommunityconstruction.info/brkgs-university-blvd" target="_blank" rel="noopener noreferrer">project page</a> for more details.',
+						'description': 'After removing surfacing and installing a new sanitary sewer, these road segments will be reconstructed. Refer to the <a href="https://brookingscommunityconstruction.info/2024-uni-blvd-22nd-ave" target="_blank" rel="noopener noreferrer">project page</a> for more details.',
 						'status': 'Not Started',
 						'lastUpdate': 'Updated March 11, 2024'
 					}
@@ -323,11 +328,11 @@ mapboxgl.accessToken = 'pk.eyJ1IjoiYmFubmVyYmR0ZWFtIiwiYSI6ImNsMnFqNjN6cjAxNTUza
 				'type': 'Feature',
 					'geometry': {
 						'type': 'Point',
-						'coordinates': [-96.748758, 44.317792]
+						'coordinates': [-96.748217, 44.317792]
 					},
 					'properties': {
 						'name': '34th Ave Reconstruction and Watermain Installation',
-						'description': '34th Ave will be closed in segments to install new watermain and reconstruct the road. Refer to the <a href="https://brookingscommunityconstruction.info/bmu-rt-wtr-ph2-34th" target="_blank" rel="noopener noreferrer">project page</a> for more details.',
+						'description': '34th Ave will be closed in segments to install new watermain and reconstruct the road. Refer to the <a href="https://brookingscommunityconstruction.info/2024-34th-ave-rd-and-wtr" target="_blank" rel="noopener noreferrer">project page</a> for more details.',
 						'status': 'Not Started',
 						'lastUpdate': 'Updated March 11, 2024'
 					}
@@ -336,24 +341,11 @@ mapboxgl.accessToken = 'pk.eyJ1IjoiYmFubmVyYmR0ZWFtIiwiYSI6ImNsMnFqNjN6cjAxNTUza
 				'type': 'Feature',
 					'geometry': {
 						'type': 'Point',
-						'coordinates': [-96.788448, 44.31678]
-					},
-					'properties': {
-						'name': 'SDSU West Watermain Upgrade',
-						'description': 'Upgraded watermain will provide more reliable service to campus facilities. Harvey Dunn St and Medary Ave will be closed during installation. Refer to the <a href="https://brookingscommunityconstruction.info/bmu-rt-wtr-ph2-34th" target="_blank" rel="noopener noreferrer">project page</a> for more details.',
-						'status': 'Not Started',
-						'lastUpdate': 'Updated March 11, 2024'
-					}
-				},
-				{
-				'type': 'Feature',
-					'geometry': {
-						'type': 'Point',
-						'coordinates': [-96.74519, 44.320053]
+						'coordinates': [-96.745176, 44.320764]
 					},
 					'properties': {
 						'name': 'Water Treatment Plant',
-						'description': 'A new water treatment plant is planned for construction. New watermains are being installed along 20th St S and 34th Ave.',
+						'description': 'A new water treatment plant is planned for construction. New watermains are being installed along 20th St S and 34th Ave. Refer to the <a href="https://brookingscommunityconstruction.info/bmu-new-wtp2023" target="_blank" rel="noopener noreferrer">project page</a> for more details.',
 						'status': 'Not Started',
 						'lastUpdate': 'Updated March 11, 2024'
 					}
@@ -366,7 +358,7 @@ mapboxgl.accessToken = 'pk.eyJ1IjoiYmFubmVyYmR0ZWFtIiwiYSI6ImNsMnFqNjN6cjAxNTUza
 					},
 					'properties': {
 						'name': 'Western Ave Culvert Replacement',
-						'description': 'The aging culvert will be replaced. Refer to the <a href="https://brookingscommunityconstruction.info/" target="_blank" rel="noopener noreferrer">project page</a> for more details.',
+						'description': 'The aging culvert will be replaced. Refer to the <a href="https://brookingscommunityconstruction.info/2024-wester-ave-culvert" target="_blank" rel="noopener noreferrer">project page</a> for more details.',
 						'status': 'Not Started',
 						'lastUpdate': 'Updated March 11, 2024'
 					}
@@ -379,7 +371,7 @@ mapboxgl.accessToken = 'pk.eyJ1IjoiYmFubmVyYmR0ZWFtIiwiYSI6ImNsMnFqNjN6cjAxNTUza
 					},
 					'properties': {
 						'name': 'Concrete and Asphalt Repairs and Replacement',
-						'description': 'Multiple street segments (<font color="#2accfa">blue</font> lines) will be resurfaced, and multiple sidewalks (<font color="#2accfa">blue</font> dots) will be replaced with ADA-compliant designs for increased accessibility. Refer to the <a href="https://brookingscommunityconstruction.info/" target="_blank" rel="noopener noreferrer">project page</a> for more details.',
+						'description': 'Multiple street segments (<font color="#2accfa">blue</font> lines) will be resurfaced, and multiple sidewalks (<font color="#2accfa">blue</font> dots) will be replaced with ADA-compliant designs for increased accessibility. Refer to the <a href="https://brookingscommunityconstruction.info/2024-concrete-and-overlay" target="_blank" rel="noopener noreferrer">project page</a> for more details.',
 						'status': 'Not Started',
 						'lastUpdate': 'Updated March 11, 2024'
 					}
@@ -392,7 +384,7 @@ mapboxgl.accessToken = 'pk.eyJ1IjoiYmFubmVyYmR0ZWFtIiwiYSI6ImNsMnFqNjN6cjAxNTUza
 					},
 					'properties': {
 						'name': 'Chip and Slurry',
-						'description': 'Multiple street segments (<font color="#c02afa">purple</font> lines) throughout Brookings will be resurfaced. Refer to the <a href="https://brookingscommunityconstruction.info/" target="_blank" rel="noopener noreferrer">project page</a> for more details.',
+						'description': 'Multiple street segments (<font color="#c02afa">purple</font> lines) throughout Brookings will be resurfaced. Refer to the <a href="https://brookingscommunityconstruction.info/2024-chip-and-slurry" target="_blank" rel="noopener noreferrer">project page</a> for more details.',
 						'status': 'Not Started',
 						'lastUpdate': 'Updated March 11, 2024'
 					}
@@ -405,14 +397,42 @@ mapboxgl.accessToken = 'pk.eyJ1IjoiYmFubmVyYmR0ZWFtIiwiYSI6ImNsMnFqNjN6cjAxNTUza
 					},
 					'properties': {
 						'name': 'Lead Water Service Replacement',
-						'description': 'Replacement of nearly 50 existing Lead Water service lines throughout Brookings. This project area is for the first 17 planned sites. Refer to the <a href="https://brookingscommunityconstruction.info" target="_blank" rel="noopener noreferrer">project page</a> for more details.',
+						'description': 'Replacement of nearly 50 existing Lead Water service lines throughout Brookings. This project area is for the first 17 planned sites. Refer to the <a href="https://brookingscommunityconstruction.info/2024-lead-wtrline-replace" target="_blank" rel="noopener noreferrer">project page</a> for more details.',
 						'status': 'Not Started',
 						'lastUpdate': 'Updated March 11, 2024'
 					}
 				}
 		]
 	};
-			
+	
+	// When a click event occurs on a feature in the places layer, open a popup at the
+	// location of the feature, with description HTML from its properties.
+	map.on('click', '20thStInterchangeLayer', (e) => {
+		// Copy coordinates array.
+		const coordinates = e.features[0].geometry.coordinates.slice();
+		const description = e.features[0].properties.description;
+	 
+		// Ensure that if the map is zoomed out such that multiple
+		// copies of the feature are visible, the popup appears
+		// over the copy being pointed to.
+		while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
+			coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
+		}
+		 
+		new mapboxgl.Popup()
+			.setLngLat([-96.75815277859071, 44.28534915847476])
+			.setHTML(description)
+			.addTo(map);
+	});
+	// Change the cursor to a pointer when the mouse is over the places layer.
+	map.on('mouseenter', '20thStInterchangeLayer', () => {
+		map.getCanvas().style.cursor = 'pointer';
+	});
+	 
+	// Change it back to a pointer when it leaves.
+	map.on('mouseleave', '20thStInterchangeLayer', () => {
+		map.getCanvas().style.cursor = '';
+	});	
 	/**
 	 * Assign a unique id to each project. You'll use this `id`
 	 * later to associate each point on the map with a listing
@@ -492,8 +512,8 @@ mapboxgl.accessToken = 'pk.eyJ1IjoiYmFubmVyYmR0ZWFtIiwiYSI6ImNsMnFqNjN6cjAxNTUza
 	}
 
 		function openNav() {
-		  document.getElementById("mySidebar").style.width = "33%";
-		  document.getElementById("main").style.marginLeft = "33%";
+		  document.getElementById("mySidebar").style.width = "28%";
+		  document.getElementById("main").style.marginLeft = "28%";
 		}
 
 		function closeNav() {
@@ -523,6 +543,7 @@ mapboxgl.accessToken = 'pk.eyJ1IjoiYmFubmVyYmR0ZWFtIiwiYSI6ImNsMnFqNjN6cjAxNTUza
 		/* Add details to the individual listing. */
 		const details = listing.appendChild(document.createElement('div'));
 				details.innerHTML = `${project.properties.status}`;
+				details.className = 'innerText';
 				if (project.properties.lastUpdate) {
 				details.innerHTML += ` &middot; ${project.properties.lastUpdate}`;
 				}
